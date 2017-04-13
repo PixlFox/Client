@@ -1,0 +1,37 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "0.1.0",
+    "tasks": [
+        {
+            "isBuildCommand": true,
+            "taskName": "win-build",
+            "command": "electron-packager",
+            "args": [
+                "./",
+                "--overwrite",
+                "--out", "../pixlfoxclient_builds",
+                "--platform", "win32",
+                "--arch", "ia32,x64",
+                "--asar=true",
+                "--prune=true",
+                "--icon", "./logo-icon-white-128.ico",
+                "--app-copyright", "Copyright (C) 2017 PixlFox LLC. All rights reserved.",
+                "--win32metadata.CompanyName=PixlFox LLC",
+                "--win32metadata.ProductName=PixlFox Client",
+                "--win32metadata.FileDescription=PixlFox Client",
+                "--win32metadata.OriginalFilename=pixlfox.exe"
+            ],
+            "isShellCommand": true,
+            "showOutput": "always"
+        },
+        {
+            "taskName": "tsc",
+            "command": "tsc",
+            "isShellCommand": true,
+            "args": ["-p", "."],
+            "showOutput": "silent",
+            "problemMatcher": "$tsc"
+        }
+    ]
+}

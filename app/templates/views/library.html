@@ -1,0 +1,10 @@
+<div style="width: 100%; height: 100%; overflow: auto; padding: 16px;">
+    <div *ngFor="let libraryItem of pixlfoxClient.library" (click)="viewGame(libraryItem.id)" style="position: relative; margin: 8px; width: 350px; height: 250px; display: inline-block; background-color: white;">
+        <img style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="{{libraryItem.images.tile}}" />
+        <div class="overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 72px; padding: 6px; background-color: rgba(0,0,0,.5);">
+            <h4 class="card-title">{{libraryItem.name}}</h4>
+            <p class="card-text">{{libraryItem.description}}</p>
+            <!--<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
+        </div>
+    </div>
+</div>

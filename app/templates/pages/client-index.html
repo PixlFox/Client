@@ -1,0 +1,62 @@
+<header>
+	<img class="icon" src="https://pixlfox.com/img/logo.png" />
+	<div class="title">PixlFox Client</div>
+</header>
+<div class="content">
+	<div class="view-panel">
+		<view-panel name="default"></view-panel>
+	</div>
+
+	<div class="friends-panel">
+		<ul class="list-group friends-list">
+			<li *ngFor="let friend of pixlfoxClient.friends | orderBy : ['statusSorting', 'displayName']" class="list-group-item" (click)="viewChat(friend.id)" [contextMenu]="friendsContextMenu" [contextMenuSubject]="friend">
+					<div class="thumb-box">
+						<img class="profile-image" src="{{friend.profileImageUrl}}" />
+						<div class="status" [ngClass]="{online: friend.status == 'Online', offline: friend.status == 'Offline', away: friend.status == 'Away', ingame: friend.status == 'InGame'}"></div>
+						<div class="notify-count" *ngIf="pixlfoxClient.getUnreadChatMessages(friend.id).length != 0">
+							<span *ngIf="pixlfoxClient.getUnreadChatMessages(friend.id).length < 100">{{pixlfoxClient.getUnreadChatMessages(friend.id).length}}</span>
+							<span *ngIf="pixlfoxClient.getUnreadChatMessages(friend.id).length >= 100">99+</span>
+						</div>
+					</div>
+					<div class="info-box">
+						<div class="display-name">{{friend.displayName}}</div>
+						<div *ngIf="friend.status == 'InGame'" class="status">playing {{friend.playingGame?.name}}</div>
+						<div *ngIf="friend.status != 'InGame'" class="status">{{friend.status}}</div>
+					</div>
+				<span class="clearfix"></span>
+			</li>
+		</ul>
+
+		<div class="account-info dropup">
+			<div data-toggle="dropdown">
+				<div class="thumb-box">
+					<img class="profile-image" src="{{pixlfoxClient.accountInfo?.profileImageUrl}}" />
+					<div class="status" [ngClass]="{online: pixlfoxClient.accountInfo?.status == 'Online', offline: pixlfoxClient.accountInfo?.status == 'Offline', away: pixlfoxClient.accountInfo?.status == 'Away', ingame: pixlfoxClient.accountInfo?.status == 'InGame'}"></div>
+				</div>
+				<div class="info-box">
+					<div class="display-name">{{pixlfoxClient.accountInfo?.displayName}}</div>
+					<div class="status">{{pixlfoxClient.accountInfo?.email}}</div>
+				</div>
+				<span class="clearfix"></span>
+			</div>
+			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+				<a class="dropdown-item" (click)="viewProfile(pixlfoxClient.accountInfo?.id)"><i class="mdi mdi-account"></i> My Profile</a>
+				<a class="dropdown-item" (click)="viewLibrary()">My Library</a>
+				<div class="dropdown-divider"></div>
+				<a class="dropdown-item" (click)="pixlfoxClient.setAccountStatus('Online')"><i class="mdi mdi-circle status online"></i> Online</a>
+				<a class="dropdown-item" (click)="pixlfoxClient.setAccountStatus('Away')"><i class="mdi mdi-circle status away"></i> Away</a>
+				<a class="dropdown-item" (click)="pixlfoxClient.setAccountStatus('Offline')"><i class="mdi mdi-circle status offline"></i> Offline</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<context-menu #friendsContextMenu [useBootstrap4]="true">
+  <template contextMenuItem (execute)="viewProfile($event.item.id)">
+    <i class="mdi mdi-account"></i> View Profile
+  </template>
+  <!--<template contextMenuItem divider="true"></template>-->
+  <template contextMenuItem (execute)="viewChat($event.item.id)">
+    <i class="mdi mdi-message"></i> Chat
+  </template>
+</context-menu>

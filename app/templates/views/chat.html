@@ -1,0 +1,38 @@
+<div class="chat">
+    <div class="chat-header clearfix">
+        <img src="{{pixlfoxClient.accounts[accountId]?.profileImageUrl}}" alt="avatar" class="profile-image" style="width: 55px; height: 55px;" />
+        <div class="chat-about">
+            <div class="chat-with">Chat with {{pixlfoxClient.accounts[accountId]?.displayName}}</div>
+            <div *ngIf="pixlfoxClient.accounts[accountId].status == 'InGame'" class="chat-num-messages">playing {{pixlfoxClient.accounts[accountId].playingGame?.name}}</div>
+            <div *ngIf="pixlfoxClient.accounts[accountId].status != 'InGame'" class="chat-num-messages">{{pixlfoxClient.accounts[accountId].status}}</div>
+        </div>
+        <!--<i class="mdi mdi-star-outline"></i>-->
+    </div>
+
+    <div class="chat-history" vp-scrollable-content=".chat-history">
+        <ul>
+            <li class="clearfix" *ngFor="let chatMessage of pixlfoxClient.chatMessages[accountId]">
+                <div class="message-data" [ngClass]="{'align-right': chatMessage.from != pixlfoxClient.accountInfo.id}" *ngIf="previousMessage?.from != chatMessage?.from">
+                    <span class="message-data-time">{{chatMessage.moment.format('LT')}}</span> &nbsp; &nbsp;
+                    <span class="message-data-name">{{pixlfoxClient.accounts[chatMessage.from]?.displayName}}</span>
+                </div>
+                <div (vp-in-view)="markChatMessageRead(chatMessage)" [vp-in-view-config]="{infinite: true, marginVertical: -140}" class="message"
+                [ngClass]="{
+                    'other-message': chatMessage.from != pixlfoxClient.accountInfo.id,
+                    'float-right': chatMessage.from != pixlfoxClient.accountInfo.id,
+                    'my-message': chatMessage.from == pixlfoxClient.accountInfo.id,
+                    'message-failed': !chatMessage.delivered,
+                    'continued-message': previousMessage?.from == chatMessage?.from
+                }" [innerHTML]="chatMessage.message | message"></div>
+
+                <span [class.ignore]='setPreviousMessage(chatMessage)'></span>
+            </li>
+        </ul>
+        <span [class.ignore]='setPreviousMessage(null)'></span>
+    </div>
+
+    <div class="chat-message clearfix">
+        <textarea #chatMessageInput name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3" maxlength="2000" (keydown.enter)="sendChatMessage(chatMessageInput.value); chatMessageInput.value = ''; $event.preventDefault();"></textarea>
+        <button (click)="sendChatMessage(chatMessageInput.value); chatMessageInput.value = ''; $event.preventDefault();">Send</button>
+    </div>
+</div>
