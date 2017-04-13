@@ -1,0 +1,6 @@
+[submodule "angular2-viewport"]
+	path = angular2-viewport
+	url = https://github.com/alisahinozcelik/angular2-viewport.git
+[submodule "lib/angular2-viewport"]
+	path = lib/angular2-viewport
+	url = https://github.com/alisahinozcelik/angular2-viewport.git
