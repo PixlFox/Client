@@ -17,7 +17,7 @@ import { ContextMenuModule } from 'angular2-contextmenu';
 import { GameViewComponent } from "./components/game-view.component";
 import { ChatComponent } from "./components/chat.component";
 import { ViewPanelService } from "./services/view-panel.service";
-import { ViewportModule } from 'angular2-viewport';
+import { ViewportModule } from '../modules/angular2-viewport';
 import { MessagePipe } from './pipes/message.pipe';
 import { GameManagerService } from "./services/game-manager.service";
 
