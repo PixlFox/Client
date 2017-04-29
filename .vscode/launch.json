@@ -15,8 +15,9 @@
             "cwd": "${workspaceRoot}",
             "preLaunchTask": "tsc",
             //"runtimeExecutable": "${workspaceRoot}/node_modules/electron/dist/electron.exe",
-            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd",
+            "runtimeExecutable": "node",
             "runtimeArgs": [
+                "${workspaceRoot}/node_modules/electron/cli.js",
                 "."
             ],
             "env": {},

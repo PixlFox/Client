@@ -1,7 +1,5 @@
 import { NgModule, Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-const { emojify } = require('node-emoji');
-const twemoji = require('../../twemoji.npm');
 import emojione = require('emojione');
 
 @Pipe({
