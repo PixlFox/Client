@@ -2,7 +2,7 @@ import { Observable, Subject } from 'rxjs';
 
 export function throttler<T>(observable: Observable<T>, throttleTime: number):Observable<T> {
 	const subj: Subject<T> = new Subject();
-	let timeout: number | boolean = false;
+	let timeout: number | boolean | NodeJS.Timer = false;
 	let allowed = true;
 
 	observable.subscribe(e => {
