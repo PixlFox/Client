@@ -17,9 +17,14 @@ import { ContextMenuModule } from 'angular2-contextmenu';
 import { GameViewComponent } from "./components/game-view.component";
 import { ChatComponent } from "./components/chat.component";
 import { ViewPanelService } from "./services/view-panel.service";
-import { ViewportModule } from '../modules/angular2-viewport';
+import { ViewportModule } from '../lib/angular2-viewport';
 import { MessagePipe } from './pipes/message.pipe';
 import { GameManagerService } from "./services/game-manager.service";
+import { SettingsComponent } from "./components/settings.component";
+
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MdSlideToggleModule, MdCardModule, MdProgressBarModule, MdTooltipModule, MdSnackBarModule, MdMenuModule, MdIconModule } from '@angular/material';
+import { DownloadsComponent } from "./components/downloads.component";
 
 @NgModule({
 	imports: [
@@ -27,10 +32,13 @@ import { GameManagerService } from "./services/game-manager.service";
 		FormsModule,
 		AppRoutingModule,
 		ContextMenuModule,
-		ViewportModule
+		ViewportModule,
+		BrowserAnimationsModule,
+		[MdSlideToggleModule, MdCardModule, MdProgressBarModule, MdTooltipModule, MdSnackBarModule, MdMenuModule, MdIconModule]
 	],
 	exports: [
-		MessagePipe
+		MessagePipe,
+		[MdSlideToggleModule, MdCardModule, MdProgressBarModule, MdTooltipModule, MdSnackBarModule, MdMenuModule, MdIconModule]
 	],
 	declarations: [
 		AppComponent,
@@ -38,7 +46,7 @@ import { GameManagerService } from "./services/game-manager.service";
 		OrderBy,
 		ViewPanel,
 		[ClientIndexComponent, AuthComponent],
-		[LibraryComponent, CommunityComponent, GameViewComponent, ChatComponent],
+		[LibraryComponent, CommunityComponent, GameViewComponent, ChatComponent, DownloadsComponent, SettingsComponent],
 		MessagePipe
 	],
 	providers: [
@@ -50,7 +58,9 @@ import { GameManagerService } from "./services/game-manager.service";
 		LibraryComponent,
 		CommunityComponent,
 		GameViewComponent,
-		ChatComponent
+		ChatComponent,
+		DownloadsComponent,
+		SettingsComponent
 	],
 	bootstrap: [AppComponent],
 	schemas: [

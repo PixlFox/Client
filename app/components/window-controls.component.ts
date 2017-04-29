@@ -1,5 +1,6 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-const electron = require("electron");
+import * as electron from 'electron';
+import jQuery = require("jquery");
 
 @Component({
   selector: 'window-controls',
@@ -23,10 +24,12 @@ export class WindowControlsComponent {
         this.window.on("maximize", () => {
             this.isWindowMaximized = true;
             cd.detectChanges();
+            jQuery('html').addClass('maximized');
         });
         this.window.on("unmaximize", () => {
             this.isWindowMaximized = false;
             cd.detectChanges();
+            jQuery('html').removeClass('maximized');
         });
     }
 

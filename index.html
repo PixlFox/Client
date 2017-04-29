@@ -4,11 +4,13 @@
 		<meta charset="UTF-8">
 		<title>PixlFox Client</title>
 		<script>document.write('<base href="' + document.location + '" />');</script>
+		<link href="app/style/material.css" rel="stylesheet">
     	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
     	<link rel="stylesheet" href="node_modules/mdi/css/materialdesignicons.min.css" />
 		<link rel="stylesheet" href="./app/style/master.css" />
 	</head>
 	<body style="height: 100%; width: 100%; margin: 0;" class="fixed-header">
+		<div class="loading"><div id="loader"></div></div>
 		<app></app>
 	</body>
 
@@ -18,12 +20,21 @@
 	<script>
 		require('./app/client.js');
 
-		var jQuery = $ = require('jquery')
-		var Tether = $ = require('tether')
+		const jQuery = require('jquery');
+		const $ = jQuery;
+		const Tether = require('tether');
+		const keyboardJS = require('keyboardJS');
+		const electron = require('electron');
 		require('bootstrap');
 
 		window.reload = () => {
 			window.location = "file://" + __dirname + "/index.html";
 		}
+
+		window.openLink = (link) => {
+			electron.shell.openExternal(link);
+		}
+
+		keyboardJS.bind("shift + f5", () => window.reload());
 	</script>
 </html>

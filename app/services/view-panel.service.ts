@@ -7,6 +7,20 @@ import { GameViewComponent } from "../components/game-view.component";
 export class ViewPanelService {
     private viewPanels: any = { };
 
+    constructor() {
+        window["viewPanelService"] = this;
+    }
+
+    public getViewComponentName(viewPanelName: string) {
+        let viewPanel: ViewPanel = this.viewPanels[viewPanelName];
+
+        if(viewPanel && viewPanel.componentInstance) {
+            return viewPanel.componentInstance.constructor.name;
+        }
+
+        return null;
+    }
+
     public registerViewPanel(viewPanel: ViewPanel) {
         this.viewPanels[viewPanel.name] = viewPanel;
     }

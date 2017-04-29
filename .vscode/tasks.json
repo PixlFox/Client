@@ -12,7 +12,7 @@
                 "--overwrite",
                 "--out", "../pixlfoxclient_builds",
                 "--platform", "win32",
-                "--arch", "ia32,x64",
+                "--arch", "x64",
                 "--asar=true",
                 "--prune=true",
                 "--icon", "./logo-icon-white-128.ico",

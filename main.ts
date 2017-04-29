@@ -42,7 +42,7 @@ function parseArgs(args: string[]) {
 
 
 function createWindow() {
-	mainWindow = new Electron.BrowserWindow({ width: 1014, height: 700, minWidth: 800, minHeight: 600, frame: false, backgroundColor: "#2e3136", icon: "logo-icon-white-128.ico" });
+	mainWindow = new Electron.BrowserWindow({ width: 1014, height: 700, minWidth: 800, minHeight: 600, frame: false, backgroundColor: "#404257", icon: "logo-icon-white-128.ico" });
 
 	mainWindow.loadURL(url.format({
 		pathname: path.join(__dirname, 'index.html'),
@@ -77,49 +77,58 @@ Electron.app.on('ready', function() {
         return;
     }
 
-    Electron.app.setUserTasks([
-        {
-            program: process.execPath,
-            arguments: '"' + __dirname + '" --quit',
-            iconPath: process.execPath,
-            iconIndex: 0,
-            title: 'Quit PixlFox Client',
-            description: 'Quits the PixlFox Client.'
-        }
-    ])
+	if(process.platform == 'win32') {
+		Electron.app.setUserTasks([
+			{
+				program: process.execPath,
+				arguments: '"' + __dirname + '" --quit',
+				iconPath: process.execPath,
+				iconIndex: 0,
+				title: 'Quit PixlFox Client',
+				description: 'Quits the PixlFox Client.'
+			}
+		])
+	}
 
 	createWindow();
 
-	tray = new Electron.Tray(Electron.nativeImage.createFromPath(__dirname + '/logo-icon-white-32.ico'))
 	const contextMenu = Electron.Menu.buildFromTemplate([
-		{
-			label: 'Show',
-			click: function() {
-				if (mainWindow) {
-					if (!mainWindow.isVisible()) mainWindow.show();
-					if (mainWindow.isMinimized()) mainWindow.restore()
-					mainWindow.focus()
+			{
+				label: 'Show',
+				click: function() {
+					if (mainWindow) {
+						if (!mainWindow.isVisible()) mainWindow.show();
+						if (mainWindow.isMinimized()) mainWindow.restore()
+						mainWindow.focus()
+					}
+				}
+			},
+			{type: 'separator'},
+			{
+				label: 'Exit',
+				click: function() {
+					canQuit = true;
+					Electron.app.quit();
 				}
 			}
-		},
-		{type: 'separator'},
-		{
-			label: 'Exit',
-			click: function() {
-				canQuit = true;
-				Electron.app.quit();
+		]);
+
+	if(process.platform == 'win32') {
+		tray = new Electron.Tray(Electron.nativeImage.createFromPath(__dirname + '/logo-icon-white-32.ico'));
+
+		tray.setToolTip('PixlFox Client');
+		tray.setContextMenu(contextMenu);
+		tray.on("double-click", function() {
+			if (mainWindow) {
+				if (!mainWindow.isVisible()) mainWindow.show();
+				if (mainWindow.isMinimized()) mainWindow.restore()
+				mainWindow.focus()
 			}
-		}
-	]);
-	tray.setToolTip('PixlFox Client');
-	tray.setContextMenu(contextMenu);
-	tray.on("double-click", function() {
-		if (mainWindow) {
-			if (!mainWindow.isVisible()) mainWindow.show();
-			if (mainWindow.isMinimized()) mainWindow.restore()
-			mainWindow.focus()
-		}
-	});
+		});
+	}
+	else if(process.platform == 'darwin') {
+		Electron.app.dock.setMenu(contextMenu);
+	}
 });
 
 Electron.app.on('window-all-closed', function () {

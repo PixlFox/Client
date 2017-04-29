@@ -10,6 +10,8 @@ import { ContextMenuService } from "angular2-contextmenu/angular2-contextmenu";
 import { GameViewComponent } from "./components/game-view.component";
 import { ChatComponent } from "./components/chat.component";
 import { ViewPanelService } from "./services/view-panel.service";
+import { SettingsComponent } from "./components/settings.component";
+import { DownloadsComponent } from "./components/downloads.component";
 
 @Component({
 	templateUrl: './app/templates/pages/client-index.html'
@@ -41,7 +43,7 @@ export class ClientIndexComponent implements AfterViewInit {
 	}
 
 	public viewProfile(accountId: string) {
-		this.viewPanelService.loadView("default", CommunityComponent).navigate("https://pixlfox.com/account/profile/" + accountId);
+		this.viewPanelService.loadView("default", CommunityComponent).navigate("https://pixlfox.com/@" + accountId);
 	}
 
 	public viewChat(accountId: string) {
@@ -50,6 +52,18 @@ export class ClientIndexComponent implements AfterViewInit {
 
 	public viewLibrary() {
 		this.viewPanelService.loadView("default", LibraryComponent);
+	}
+
+	public viewBrowser() {
+		this.viewPanelService.loadView("default", CommunityComponent).navigate("https://pixlfox.com");
+	}
+
+	public viewDownloads() {
+		this.viewPanelService.loadView("default", DownloadsComponent);
+	}
+
+	public viewSettings() {
+		this.viewPanelService.loadView("default", SettingsComponent);
 	}
 
 	public viewGame(gameId: string) {
@@ -68,7 +82,7 @@ export class ClientIndexComponent implements AfterViewInit {
 })
 export class AuthComponent implements OnInit {
 	ngOnInit(): void {
-		var authWebView = document.querySelector("#auth-webview");
+		var authWebView: any = document.querySelector("#auth-webview");
 
 		authWebView.addEventListener('close', () => {
 			window.close();
@@ -80,8 +94,12 @@ export class AuthComponent implements OnInit {
 
 				console.log("AuthURL: ", url );
 
+				if(url.host == "pixlfox.com" && (url.pathname == "/oauth2/authorize" || url.pathname == "/login")) {
+					this.app.isLoading = false;
+				}
 				if(url.host == "pixlfox.com" && url.pathname == "/client/auth") {
 					if(url.searchParams.get("state") == "cancelled") {
+						authWebView.loadURL("https://pixlfox.com/oauth2/authorize?display=integrated&response_type=token&client_id=765ab75f27354b1cc48e08d47bcb02d3&scope=profile.email.read,profile.friends.read,rtc.connect,rtc.message&redirect_uri=https://pixlfox.com/client/auth");
 						window.close();
 					}
 					else if(url.searchParams.get("state") == "complete") {
@@ -96,6 +114,6 @@ export class AuthComponent implements OnInit {
 	}
 
 	constructor(private router: Router, private pixlfoxClient: PixlFoxClientService, private app: AppComponent) {
-
+		
 	}
 }

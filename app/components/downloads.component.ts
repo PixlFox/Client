@@ -10,9 +10,9 @@ import Vibrant = require('node-vibrant')
 import { GameManagerService } from "../services/game-manager.service";
 
 @Component({
-	templateUrl: './app/templates/views/library.html'
+	templateUrl: './app/templates/views/downloads.html'
 })
-export class LibraryComponent {
+export class DownloadsComponent {
 	constructor(private pixlfoxClient: PixlFoxClientService, private gameManager: GameManagerService, private viewPanelService: ViewPanelService) {
 		
 	}
@@ -20,11 +20,5 @@ export class LibraryComponent {
 	public viewGame(gameId: string) {
 		let game = this.pixlfoxClient.getLibraryItem(gameId);
 		this.viewPanelService.loadView("default", GameViewComponent).game = game;
-	}
-
-	public getTileVibrantColor(gameInfo: PixlFox.GameInfo) {
-		Vibrant.from(gameInfo.images["tile"]).getPalette((err, palette) => {
-			console.log(palette.Vibrant.getHex());
-		});
 	}
 }

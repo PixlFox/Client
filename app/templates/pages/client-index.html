@@ -1,15 +1,84 @@
 <header>
-	<img class="icon" src="https://pixlfox.com/img/logo.png" />
-	<div class="title">PixlFox Client</div>
+	<img class="icon" src="https://pixlfox.com/img/logo.png" title="PixlFox Client" />
+	<div class="title">
+		<span *ngIf="viewPanelService.getViewComponentName('default') == 'LibraryComponent'">
+			Library
+		</span>
+		<span *ngIf="viewPanelService.getViewComponentName('default') == 'ChatComponent'">
+			Chat
+		</span>
+		<span *ngIf="viewPanelService.getViewComponentName('default') == 'CommunityComponent'">
+			Web
+		</span>
+		<span *ngIf="viewPanelService.getViewComponentName('default') == 'DownloadsComponent'">
+			Downloads
+		</span>
+		<span *ngIf="viewPanelService.getViewComponentName('default') == 'SettingsComponent'">
+			Settings
+		</span>
+	</div>
+	<div class="search">
+		<input type="text" placeholder="Search..." />
+		<i class="mdi mdi-magnify"></i>
+	</div>
+	<div class="account-info-tile dropdown">
+		<div data-toggle="dropdown">
+			<div class="thumb-box">
+				<img class="profile-image" src="{{pixlfoxClient.accountInfo?.profileImageUrl}}">
+				<div class="status" [ngClass]="{online: pixlfoxClient.accountInfo?.status == 'Online', offline: pixlfoxClient.accountInfo?.status == 'Offline', away: pixlfoxClient.accountInfo?.status == 'Away', ingame: pixlfoxClient.accountInfo?.status == 'InGame'}"></div>
+			</div>
+			<div class="text-wrapper">
+				<div class="display-name">{{pixlfoxClient.accountInfo?.displayName}}</div>
+				<div class="display-info">@{{pixlfoxClient.accountInfo?.username}}</div>
+			</div>
+		</div>
+		<div style="width: 175px;" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			<a class="dropdown-item" (click)="viewProfile(pixlfoxClient.accountInfo?.username)"><i class="mdi mdi-account"></i> My Profile</a>
+			<a class="dropdown-item" (click)="viewLibrary()">My Library</a>
+			<div class="dropdown-divider"></div>
+			<a class="dropdown-item" (click)="pixlfoxClient.setAccountStatus('Online')"><i class="mdi mdi-circle status online"></i> Online</a>
+			<a class="dropdown-item" (click)="pixlfoxClient.setAccountStatus('Away')"><i class="mdi mdi-circle status away"></i> Away</a>
+			<a class="dropdown-item" (click)="pixlfoxClient.setAccountStatus('Offline')"><i class="mdi mdi-circle status offline"></i> Offline</a>
+		</div>
+	</div>
 </header>
 <div class="content">
+	<div class="nav-panel">
+		<ul class="list-group nav-list">
+			<!--<li class="list-group-item" title="Store" [ngClass]="{active: viewPanelService.getViewComponentName('default') == 'StoreComponent'}">
+				<i class="mdi mdi-cart-outline"></i>
+				<span class="clearfix"></span>
+			</li>-->
+			<li class="list-group-item" mdTooltip="Library" mdTooltipPosition="right" (click)="viewLibrary()" [ngClass]="{active: viewPanelService.getViewComponentName('default') == 'LibraryComponent'}">
+				<i class="mdi mdi-format-list-bulleted"></i>
+				<span class="clearfix"></span>
+			</li>
+			<li class="list-group-item" mdTooltip="Chat" mdTooltipPosition="right" (click)="viewChat(null)" [ngClass]="{active: viewPanelService.getViewComponentName('default') == 'ChatComponent'}">
+				<i class="mdi mdi-message-outline"></i>
+				<span class="clearfix"></span>
+			</li>
+			<li class="list-group-item" mdTooltip="Web" mdTooltipPosition="right" (click)="viewBrowser()" [ngClass]="{active: viewPanelService.getViewComponentName('default') == 'CommunityComponent'}">
+				<i class="mdi mdi-web"></i>
+				<span class="clearfix"></span>
+			</li>
+			<li class="list-group-item" mdTooltip="Downloads" mdTooltipPosition="right" (click)="viewDownloads()" [ngClass]="{active: viewPanelService.getViewComponentName('default') == 'DownloadsComponent'}">
+				<i class="mdi mdi-download"></i>
+				<span class="clearfix"></span>
+			</li>
+			<li class="list-group-item" mdTooltip="Settings" mdTooltipPosition="right" (click)="viewSettings()" [ngClass]="{active: viewPanelService.getViewComponentName('default') == 'SettingsComponent'}">
+				<i class="mdi mdi-settings"></i>
+				<span class="clearfix"></span>
+			</li>
+		</ul>
+	</div>
+
 	<div class="view-panel">
 		<view-panel name="default"></view-panel>
 	</div>
 
 	<div class="friends-panel">
 		<ul class="list-group friends-list">
-			<li *ngFor="let friend of pixlfoxClient.friends | orderBy : ['statusSorting', 'displayName']" class="list-group-item" (click)="viewChat(friend.id)" [contextMenu]="friendsContextMenu" [contextMenuSubject]="friend">
+			<li *ngFor="let friend of pixlfoxClient.friends | orderBy : ['statusSorting', 'displayName']" class="list-group-item" mdTooltip="{{friend.displayName}}" mdTooltipPosition="left" (click)="viewChat(friend.id)" [contextMenu]="friendsContextMenu" [contextMenuSubject]="friend">
 					<div class="thumb-box">
 						<img class="profile-image" src="{{friend.profileImageUrl}}" />
 						<div class="status" [ngClass]="{online: friend.status == 'Online', offline: friend.status == 'Offline', away: friend.status == 'Away', ingame: friend.status == 'InGame'}"></div>
@@ -18,16 +87,11 @@
 							<span *ngIf="pixlfoxClient.getUnreadChatMessages(friend.id).length >= 100">99+</span>
 						</div>
 					</div>
-					<div class="info-box">
-						<div class="display-name">{{friend.displayName}}</div>
-						<div *ngIf="friend.status == 'InGame'" class="status">playing {{friend.playingGame?.name}}</div>
-						<div *ngIf="friend.status != 'InGame'" class="status">{{friend.status}}</div>
-					</div>
 				<span class="clearfix"></span>
 			</li>
 		</ul>
 
-		<div class="account-info dropup">
+		<!--<div class="account-info dropup">
 			<div data-toggle="dropdown">
 				<div class="thumb-box">
 					<img class="profile-image" src="{{pixlfoxClient.accountInfo?.profileImageUrl}}" />
@@ -47,12 +111,12 @@
 				<a class="dropdown-item" (click)="pixlfoxClient.setAccountStatus('Away')"><i class="mdi mdi-circle status away"></i> Away</a>
 				<a class="dropdown-item" (click)="pixlfoxClient.setAccountStatus('Offline')"><i class="mdi mdi-circle status offline"></i> Offline</a>
 			</div>
-		</div>
+		</div>-->
 	</div>
 </div>
 
 <context-menu #friendsContextMenu [useBootstrap4]="true">
-  <template contextMenuItem (execute)="viewProfile($event.item.id)">
+  <template contextMenuItem (execute)="viewProfile($event.item.username)">
     <i class="mdi mdi-account"></i> View Profile
   </template>
   <!--<template contextMenuItem divider="true"></template>-->

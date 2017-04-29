@@ -5,6 +5,12 @@ import { ViewPanel } from "../view-panel";
 import { GameViewComponent } from "../components/game-view.component";
 import * as moment from 'moment';
 import * as ElectronConfig from 'electron-config';
+import { GameManagerService } from "./game-manager.service";
+import * as enumerable from 'linq';
+
+import * as fs from 'fs';
+import * as path from 'path';
+import * as Electron from 'electron';
 
 @Injectable()
 export class PixlFoxClientService {
@@ -14,6 +20,7 @@ export class PixlFoxClientService {
 
     public api: PixlFox.Api = null;
     public rtc: PixlFox.RTCConnection = null;
+    public libraryPath: string = path.join(Electron.remote.app.getPath("userData"), "library");
 
     public accounts: any = { };
 
@@ -32,11 +39,20 @@ export class PixlFoxClientService {
 
         return friends;
     }
+
+    public get friendsEnum() {
+        return enumerable.from(this.friends);
+    }
     // public accountInfo: PixlFox.AccountInfo = null;
     // public friends: PixlFox.AccountInfo[] = null;
 
     public library: PixlFox.GameInfo[] = null;
-    public chatMessages: any = { };//window.localStorage.getItem("chatMessages") ? JSON.parse(window.localStorage.getItem("chatMessages")) : { };
+
+    public get libraryEnum() {
+        return enumerable.from(this.library);
+    }
+
+    public chatMessages: any = window.localStorage.getItem("chatMessages") ? JSON.parse(window.localStorage.getItem("chatMessages")) : { };
 
     public currentlyPlayingId: string = null;
 
@@ -77,6 +93,8 @@ export class PixlFoxClientService {
             });
 
             this.library = values[2];
+
+            this.refreshAllLocalLibraryData();
         });
     }
 
@@ -97,6 +115,7 @@ export class PixlFoxClientService {
     public fetchLibrary() {
         return this.api.getLibrary().then((library) => {
             this.library = library;
+            this.refreshAllLocalLibraryData();
         });
     }
 
@@ -132,6 +151,21 @@ export class PixlFoxClientService {
         return unreadChatMessages;
     }
 
+    public getRecentChats() {
+        let recentChats = [];
+
+        for(let i = 0; i < this.friends.length; i++) {
+            let friend = this.friends[i];
+            let messages = enumerable.from(this.chatMessages[friend.id]).orderByDescending((e: any) => e.time);
+
+            if(messages != null && messages.count() > 0) {
+                recentChats.push(messages.first());
+            }
+        }
+
+        return enumerable.from(recentChats).orderByDescending((e: any) => e.time);
+    }
+
     private onReceivedPong(packet: any) {
         
     }
@@ -141,8 +175,9 @@ export class PixlFoxClientService {
     }
 
     private onReceivedChatMessage(packet: any) {
-        packet.data.moment = moment();
+        packet.data.time = moment().valueOf();
         if(packet.data.from == this.accountId) {
+            packet.data.read = true;
             this.chatMessages[packet.data.to].push(packet.data);
         }
         else {
@@ -150,7 +185,7 @@ export class PixlFoxClientService {
             this.chatMessages[packet.data.from].push(packet.data);
         }
 
-        //window.localStorage.setItem("chatMessages", JSON.stringify(this.chatMessages));
+        window.localStorage.setItem("chatMessages", JSON.stringify(this.chatMessages));
     }
 
     public sendChatMessage(accountId: string, message: string) {
@@ -179,5 +214,48 @@ export class PixlFoxClientService {
         }
 
         return null;
+    }
+
+    public refreshAllLocalLibraryData() {
+        this.library.forEach(game => {
+            this.refreshLocalLibraryData(game);
+        });
+    }
+
+    public refreshLocalLibraryData(game: PixlFox.GameInfo) {
+        game["isInstalled"] = this.isGameInstalled(game.id);
+        game["isUpToDate"] = true;
+        game["installPath"] = path.join(this.libraryPath, game.id);
+        game["packageManifest"] = this.getLocalPackageManifest(game.id);
+        this.isGameUpToDate(game).then((isUpToDate) => {
+            game["isUpToDate"] = isUpToDate;
+        })
+    }
+
+    public isGameInstalled(gameId: string): boolean {
+        return fs.existsSync(path.join(this.libraryPath, gameId + ".json"));
+    }
+
+    public getLocalPackageManifest(gameId: string) {
+        let gameInstallPath = path.join(this.libraryPath, gameId);
+
+        if(this.isGameInstalled(gameId)) {
+            return JSON.parse(fs.readFileSync(path.join(gameInstallPath, "..", gameId + ".json"), "UTF8"));
+        }
+
+        return null;
+    }
+
+    public async isGameUpToDate(game: PixlFox.GameInfo): Promise<boolean> {
+        if(game["isInstalled"]) {
+            let remotePackageInfo = await this.api.getGamePackageInfo(game.id);
+            let localPackageManifest = game["packageManifest"];
+
+            if(remotePackageInfo.version != null && localPackageManifest != null){
+                return remotePackageInfo.version == localPackageManifest.info.version;
+            }
+        }
+
+        return true;
     }
 }

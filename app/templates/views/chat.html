@@ -1,30 +1,104 @@
-<div class="chat">
+<div class="panel full">
+    <div class="header">
+        <div class="title">Chat / Messages</div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="body no-padding">
+        <div class="chat-list">
+            <h5 style="text-align: center; padding: 16px;" *ngIf="!pixlfoxClient.getRecentChats().any()">You have no recent chats.</h5>
+            <div class="chat-list-item" *ngFor="let chat of pixlfoxClient.getRecentChats().toArray()" [class.selected]="chat.from == accountId || chat.to == accountId" (click)="viewChat(chat.from == pixlfoxClient.accountId ? chat.to : chat.from)">
+                <img class="profile-image" *ngIf="chat.from == pixlfoxClient.accountId" src="{{pixlfoxClient.getAccountInfo(chat.to).profileImageUrl}}" />
+                <img class="profile-image" *ngIf="chat.from != pixlfoxClient.accountId" src="{{pixlfoxClient.getAccountInfo(chat.from).profileImageUrl}}" />
+                <div class="info">
+                    <div class="display-name" *ngIf="chat.from == pixlfoxClient.accountId">{{pixlfoxClient.getAccountInfo(chat.to).displayName}}</div>
+                    <div class="display-name" *ngIf="chat.from != pixlfoxClient.accountId">{{pixlfoxClient.getAccountInfo(chat.from).displayName}}</div>
+                    <div class="time-stamp" *ngIf="chat.time">{{moment(chat.time).calendar()}}</div>
+                    <div class="clearfix"></div>
+                    <div class="recent-message" *ngIf="chat.message && chat.from == pixlfoxClient.accountId">You: {{trimMessage(chat.message)}}</div>
+                    <div class="recent-message" *ngIf="chat.message && chat.from != pixlfoxClient.accountId">{{trimMessage(chat.message)}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="chat-panel" *ngIf="accountId == null">
+            <h6 style="text-align: center; padding: 16px;">Select a friend from the right to start a new chat.</h6>
+        </div>
+        <div class="chat-panel" *ngIf="accountId != null">
+            <div class="header">
+                <div class="title">{{pixlfoxClient.accounts[accountId]?.displayName}}</div>
+                <div class="icons">
+                    <i style="padding: 6px;" class="mdi mdi-dots-horizontal" [mdMenuTriggerFor]="chatSettingsMenu"></i>
+                    <md-menu #chatSettingsMenu="mdMenu">
+                        <button md-menu-item (click)="clearChatMessages(accountId)">
+                            <span>Clear messages</span>
+                        </button>
+                        <button md-menu-item disabled>
+                            <span>Mark as read</span>
+                        </button>
+                        <button md-menu-item disabled>
+                            <span>Disable notifications</span>
+                        </button>
+                    </md-menu>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="chat-history scrollable" vp-scrollable-content=".chat-history">
+                <ul>
+                    <li class="clearfix" *ngFor="let chatMessage of pixlfoxClient.chatMessages[accountId]">
+                        <div class="message-header" *ngIf="previousMessage?.from != chatMessage?.from || (chatMessage?.time - previousMessage?.time) >= 300000 || chatMessage.deliveryError">
+                            <img class="profile-image" src="{{pixlfoxClient.accounts[chatMessage.from]?.profileImageUrl}}" />
+                            <div class="message-header-info">
+                                <div>
+                                    <span class="message-header-name">{{pixlfoxClient.accounts[chatMessage.from]?.displayName}}</span>
+                                    <span class="message-header-time" *ngIf="!chatMessage.deliveryError">{{moment(chatMessage.time).calendar()}}</span>
+                                    <span class="message-header-time" *ngIf="chatMessage.deliveryError" style="color: red;" mdTooltip="{{chatMessage.deliveryError}}">Failed</span>
+                                </div>
+                                <div class="message" [innerHTML]="chatMessage.message | message"></div>
+                                <div (vp-in-view)="markChatMessageRead(chatMessage)" [vp-in-view-config]="{infinite: true, marginVertical: -140}"></div>
+                            </div>
+                        </div>
+                        <div class="message" [innerHTML]="chatMessage.message | message" *ngIf="previousMessage?.from == chatMessage?.from && (chatMessage?.time - previousMessage?.time) < 300000 && !chatMessage.deliveryError"></div>
+                        <div (vp-in-view)="markChatMessageRead(chatMessage)" [vp-in-view-config]="{infinite: true, marginVertical: -140}"></div>
+                        <span [class.ignore]='setPreviousMessage(chatMessage)'></span>
+                    </li>
+                </ul>
+                <span [class.ignore]='setPreviousMessage(null)'></span>
+            </div>
+            <textarea style="background-color: transparent; resize: none; outline: none; height: 105px; width: 100%; border: none; padding: 16px; font-size: 14px;" #chatMessageInput name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3" maxlength="2000" (keydown.enter)="sendChatMessage(chatMessageInput.value); chatMessageInput.value = ''; $event.preventDefault();"></textarea>
+        </div>
+    </div>
+</div>
+<!--<div class="chat">
     <div class="chat-header clearfix">
         <img src="{{pixlfoxClient.accounts[accountId]?.profileImageUrl}}" alt="avatar" class="profile-image" style="width: 55px; height: 55px;" />
         <div class="chat-about">
             <div class="chat-with">Chat with {{pixlfoxClient.accounts[accountId]?.displayName}}</div>
-            <div *ngIf="pixlfoxClient.accounts[accountId].status == 'InGame'" class="chat-num-messages">playing {{pixlfoxClient.accounts[accountId].playingGame?.name}}</div>
-            <div *ngIf="pixlfoxClient.accounts[accountId].status != 'InGame'" class="chat-num-messages">{{pixlfoxClient.accounts[accountId].status}}</div>
+            
+            <div *ngIf="pixlfoxClient.accounts[accountId].status != 'Offline'" class="chat-num-messages">
+                {{pixlfoxClient.accounts[accountId].status}}
+                <span *ngIf="pixlfoxClient.accounts[accountId].playingGame != null">playing {{pixlfoxClient.accounts[accountId].playingGame?.name}}</span>
+            </div>
+            <div *ngIf="pixlfoxClient.accounts[accountId].status == 'Offline'" class="chat-num-messages">
+                {{pixlfoxClient.accounts[accountId].status}}
+            </div>
         </div>
-        <!--<i class="mdi mdi-star-outline"></i>-->
     </div>
 
     <div class="chat-history" vp-scrollable-content=".chat-history">
         <ul>
             <li class="clearfix" *ngFor="let chatMessage of pixlfoxClient.chatMessages[accountId]">
-                <div class="message-data" [ngClass]="{'align-right': chatMessage.from != pixlfoxClient.accountInfo.id}" *ngIf="previousMessage?.from != chatMessage?.from">
-                    <span class="message-data-time">{{chatMessage.moment.format('LT')}}</span> &nbsp; &nbsp;
-                    <span class="message-data-name">{{pixlfoxClient.accounts[chatMessage.from]?.displayName}}</span>
+                <div class="message-header" *ngIf="previousMessage?.from != chatMessage?.from">
+                    <img class="profile-image" src="{{pixlfoxClient.accounts[chatMessage.from]?.profileImageUrl}}" />
+                    <div class="message-header-info">
+                        <div>
+                            <span class="message-header-name">{{pixlfoxClient.accounts[chatMessage.from]?.displayName}}</span>
+                            <span class="message-header-time">{{chatMessage.moment.calendar()}}</span>
+                        </div>
+                        <div class="message" [innerHTML]="chatMessage.message | message"></div>
+                        <div (vp-in-view)="markChatMessageRead(chatMessage)" [vp-in-view-config]="{infinite: true, marginVertical: -140}"></div>
+                    </div>
                 </div>
-                <div (vp-in-view)="markChatMessageRead(chatMessage)" [vp-in-view-config]="{infinite: true, marginVertical: -140}" class="message"
-                [ngClass]="{
-                    'other-message': chatMessage.from != pixlfoxClient.accountInfo.id,
-                    'float-right': chatMessage.from != pixlfoxClient.accountInfo.id,
-                    'my-message': chatMessage.from == pixlfoxClient.accountInfo.id,
-                    'message-failed': !chatMessage.delivered,
-                    'continued-message': previousMessage?.from == chatMessage?.from
-                }" [innerHTML]="chatMessage.message | message"></div>
-
+                <div class="message" [innerHTML]="chatMessage.message | message" *ngIf="previousMessage?.from == chatMessage?.from"></div>
+                <div (vp-in-view)="markChatMessageRead(chatMessage)" [vp-in-view-config]="{infinite: true, marginVertical: -140}"></div>
                 <span [class.ignore]='setPreviousMessage(chatMessage)'></span>
             </li>
         </ul>
@@ -35,4 +109,4 @@
         <textarea #chatMessageInput name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3" maxlength="2000" (keydown.enter)="sendChatMessage(chatMessageInput.value); chatMessageInput.value = ''; $event.preventDefault();"></textarea>
         <button (click)="sendChatMessage(chatMessageInput.value); chatMessageInput.value = ''; $event.preventDefault();">Send</button>
     </div>
-</div>
+</div>-->

@@ -14,7 +14,8 @@
             "args": ["--dev"],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": "tsc",
-            "runtimeExecutable": "${workspaceRoot}/node_modules/electron/dist/electron.exe",
+            //"runtimeExecutable": "${workspaceRoot}/node_modules/electron/dist/electron.exe",
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd",
             "runtimeArgs": [
                 "."
             ],
