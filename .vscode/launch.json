@@ -14,10 +14,16 @@
             "args": ["--dev"],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": "tsc",
-            //"runtimeExecutable": "${workspaceRoot}/node_modules/electron/dist/electron.exe",
-            "runtimeExecutable": "node",
+            "osx": {
+                "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron"
+            },
+            "linux": {
+                "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron"
+            },
+            "windows": {
+                "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
+            },
             "runtimeArgs": [
-                "${workspaceRoot}/node_modules/electron/cli.js",
                 "."
             ],
             "env": {},

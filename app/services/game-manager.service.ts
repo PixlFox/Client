@@ -52,7 +52,10 @@ export class GameManagerService {
             let installPath = game["installPath"];
             let packageInfo = await this.pixlfoxClient.api.getGamePackageInfo(game.id);
             let existingPackageManifest = game["packageManifest"];
-            if(packageInfo.version != null && packageInfo.packageUrl != null) {
+            if(packageInfo.supportedPlatforms.indexOf(process.platform) == -1) {
+                console.warn("Package is not supported on this platform.")
+            }
+            else if(packageInfo.version != null && packageInfo.packageUrl != null) {
                 let appPackage = new PixlFox.AppPackage();
 
                 await appPackage.open(packageInfo.packageUrl);
