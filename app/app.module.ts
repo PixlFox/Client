@@ -50,9 +50,9 @@ import { DownloadsComponent } from "./components/downloads.component";
 		MessagePipe
 	],
 	providers: [
+		ViewPanelService,
 		PixlFoxClientService,
 		GameManagerService,
-		ViewPanelService
 	],
 	entryComponents: [
 		LibraryComponent,

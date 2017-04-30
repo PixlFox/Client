@@ -22,6 +22,10 @@ export class PixlFoxClientService {
     public rtc: PixlFox.RTCConnection = null;
     public libraryPath: string = path.join(Electron.remote.app.getPath("userData"), "library");
 
+    public get currentPlatform(): string {
+        return process.platform;
+    }
+
     public accounts: any = { };
 
     private accountId: string = null;
@@ -229,6 +233,9 @@ export class PixlFoxClientService {
         game["packageManifest"] = this.getLocalPackageManifest(game.id);
         this.isGameUpToDate(game).then((isUpToDate) => {
             game["isUpToDate"] = isUpToDate;
+        })
+        this.api.getGamePackageInfo(game.id).then((packageInfo) => {
+            game["supportedPlatforms"] = packageInfo.supportedPlatforms;
         })
     }
 

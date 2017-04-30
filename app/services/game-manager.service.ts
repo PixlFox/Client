@@ -9,13 +9,15 @@ import * as PixlFox from '../../pixlfox';
 import { PixlFoxClientService } from "./pixlfox.service";
 import { exec } from 'child_process';
 import * as rimraf from 'rimraf';
+import { MdSnackBar } from "@angular/material";
+import { ViewPanelService } from "./view-panel.service";
 
 @Injectable()
 export class GameManagerService {
     private config = new ElectronConfig();
     public downloads: any = { };
 
-    constructor(private ref: ApplicationRef, private pixlfoxClient: PixlFoxClientService) {
+    constructor(private ref: ApplicationRef, private viewPanelService: ViewPanelService, private pixlfoxClient: PixlFoxClientService, private snackBar: MdSnackBar) {
         window["gameManager"] = this;
     }
 
@@ -52,13 +54,18 @@ export class GameManagerService {
             let installPath = game["installPath"];
             let packageInfo = await this.pixlfoxClient.api.getGamePackageInfo(game.id);
             let existingPackageManifest = game["packageManifest"];
-            if(packageInfo.supportedPlatforms.indexOf(process.platform) == -1) {
-                console.warn("Package is not supported on this platform.")
+            if(packageInfo.supportedPlatforms != null && packageInfo.supportedPlatforms.indexOf("any") == -1 && packageInfo.supportedPlatforms.indexOf(process.platform) == -1) {
+                this.snackBar.open("Platform not supported " + game.name, null, { duration: 3000 });
             }
             else if(packageInfo.version != null && packageInfo.packageUrl != null) {
                 let appPackage = new PixlFox.AppPackage();
 
                 await appPackage.open(packageInfo.packageUrl);
+
+                let snackBarRef = this.snackBar.open("Installing " + game.name, null, { duration: 3000 });
+                // snackBarRef.onAction().subscribe(() => {
+                //     this.viewPanelService.loadView("default", DownloadsComponent);
+                // });
 
                 game["isDownloading"] = true;
                 game["downloadingVersion"] = packageInfo.version;
@@ -85,11 +92,13 @@ export class GameManagerService {
             else {
                 game["isDownloading"] = false;
                 console.warn("Unable to get package for", game.id);
+                this.snackBar.open("Failed to install " + game.name, null, { duration: 3000 });
                 // TODO: display popup saying app can't be installed, retry later
             }
         }
         catch(exception) {
             console.warn(exception);
+            this.snackBar.open("Failed to install " + game.name, null, { duration: 3000 });
             // TODO: display popup saying app can't be installed, retry later
         }
     }

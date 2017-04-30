@@ -3,18 +3,21 @@
         <div class="game-card-img">
             <img src="{{libraryItem.images.tile || 'https://pixlfox.com/img/tile.placeholder.jpg'}}" alt="">
             <div class="overlay">
-                <div class="btn-group bottom-left" *ngIf="libraryItem['isInstalled'] && !libraryItem['isDownloading']">
+                <div class="btn-group bottom-left" *ngIf="libraryItem['isInstalled'] && !libraryItem['isDownloading'] && libraryItem['supportedPlatforms'] && libraryItem['supportedPlatforms'].indexOf(pixlfoxClient.currentPlatform) != -1">
                     <button class="btn btn-primary" *ngIf="libraryItem['isUpToDate']" (click)="gameManager.installOrRunAction(libraryItem, 'launch')">Launch</button>
                     <button class="btn btn-warning" *ngIf="!libraryItem['isUpToDate']" (click)="gameManager.install(libraryItem)">Update</button>
                     <!--<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>-->
                 </div>
-                <div class="btn-group bottom-left show-hover" *ngIf="!libraryItem['isInstalled'] && !libraryItem['isDownloading']">
+                <div class="btn-group bottom-left show-hover" *ngIf="!libraryItem['isInstalled'] && !libraryItem['isDownloading'] && libraryItem['supportedPlatforms'] && libraryItem['supportedPlatforms'].indexOf(pixlfoxClient.currentPlatform) != -1">
                     <button class="btn btn-info" (click)="$event.preventDefault(); gameManager.install(libraryItem, null);">Install</button>
                 </div>
+                <div class="btn-group bottom-left show-hover" *ngIf="!libraryItem['supportedPlatforms'] || libraryItem['supportedPlatforms'].indexOf(pixlfoxClient.currentPlatform) == -1">
+                    <button class="btn btn-info" mdTooltip="This app is not currently supported on your system." mdTooltipPosition="above">Unsupported</button>
+                </div>
                 <div class="bottom-right show-hover">
-                    <i class="mdi mdi-delete" data-toggle="tooltip" data-placement="top" title="Uninstall" *ngIf="libraryItem['isInstalled']" (click)="gameManager.uninstall(libraryItem)"></i>
+                    <i class="mdi mdi-delete" mdTooltip="Uninstall" mdTooltipPosition="above" *ngIf="libraryItem['isInstalled']" (click)="gameManager.uninstall(libraryItem)"></i>
                     <!--<i class="mdi mdi-share-variant" data-toggle="tooltip" data-placement="top" title="Share with friends"></i>
                     <i class="mdi mdi-heart-outline" data-toggle="tooltip" data-placement="top" title="Add to favorites"></i>-->
                 </div>
