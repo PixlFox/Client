@@ -60,9 +60,7 @@ export class GameManagerService {
             else if(packageInfo.version != null && packageInfo.packageUrl != null) {
                 let appPackage = new PixlFox.AppPackage();
 
-                await appPackage.open(packageInfo.packageUrl);
-                console.log(appPackage);
-                
+                await appPackage.open(packageInfo.packageUrl);                
 
                 let snackBarRef = this.snackBar.open("Installing " + game.name, null, { duration: 3000 });
                 // snackBarRef.onAction().subscribe(() => {
@@ -90,6 +88,15 @@ export class GameManagerService {
                 game["isDownloading"] = false;
                 game["downloadState"] = "Complete";
                 this.pixlfoxClient.refreshLocalLibraryData(game);
+
+                if(process.platform == "darwin" || process.platform == "linux") {
+                    for(let action in appPackage.manifest.info.actions) {
+                        try {
+                            fs.chmodSync(path.join(installPath, appPackage.manifest.info.actions[action].executable), 0o0700);
+                        }
+                        catch(e) { }
+                    }
+                }
             }
             else {
                 game["isDownloading"] = false;
