@@ -37,7 +37,7 @@ export class Api {
     }
 
     getGamePackageInfo (gameId: string) {
-        return fetch(API_ENDPOINT + "/game/" + gameId + "/package", { method: 'GET', headers: new Headers({ "PixlFox-OAuthToken": this.authToken }) })
+        return fetch(API_ENDPOINT + "/game/" + gameId + "/package?platform=" + process.platform, { method: 'GET', headers: new Headers({ "PixlFox-OAuthToken": this.authToken }) })
         .then((response) => response.json())
         .then((response: any) => response);
     }
