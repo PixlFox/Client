@@ -1,0 +1,10 @@
+machine:
+  node:
+    version: 6.10.2
+dependencies:
+  override:
+    - npm set progress=false
+    - rm -rf node_modules
+    - npm install
+    - npm run compile
+    - npm run build-win32-x64
