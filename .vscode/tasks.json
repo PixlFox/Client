@@ -6,7 +6,7 @@
         {
             "isBuildCommand": true,
             "taskName": "win-build",
-            "command": "electron-packager",
+            "command": "${workspaceRoot}/node_modules/.bin/electron-packager",
             "args": [
                 "./",
                 "--overwrite",
@@ -27,7 +27,7 @@
         },
         {
             "taskName": "tsc",
-            "command": "tsc",
+            "command": "${workspaceRoot}/node_modules/.bin/tsc",
             "isShellCommand": true,
             "args": ["-p", "."],
             "showOutput": "silent",

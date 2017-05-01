@@ -9,7 +9,7 @@
             "name": "Launch",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceRoot}/main.js",
+            "program": "${workspaceRoot}/startup.js",
             "stopOnEntry": false,
             "args": ["--dev"],
             "cwd": "${workspaceRoot}",

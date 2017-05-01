@@ -2,15 +2,17 @@
   "name": "pixlfox",
   "version": "1.0.0",
   "description": "PixlFox Client",
-  "main": "main.js",
+  "main": "startup.js",
   "scripts": {
     "start": "electron .",
-    "compile": "tsc"
+    "compile": "tsc -p .",
+    "build_win32_x64": "electron-packager ./ --overwrite --out=./bin --platform=win32 --arch=x64 --asar=true --prune=true --icon=./logo-icon-white-128.ico --app-copyright=\"Copyright (C) 2017 PixlFox LLC. All rights reserved.\" --win32metadata.CompanyName=\"PixlFox LLC\" --win32metadata.ProductName=\"PixlFox Client\" --win32metadata.FileDescription=\"PixlFox Client\" --win32metadata.OriginalFilename=pixlfox.exe"
   },
   "author": "PixlFox LLC",
   "devDependencies": {
     "electron": "~1.6.2",
-    "electron-packager": "^8.6.0"
+    "electron-packager": "^8.6.0",
+    "typescript": "2.3.2"
   },
   "dependencies": {
     "@angular/animations": "^4.0.2",

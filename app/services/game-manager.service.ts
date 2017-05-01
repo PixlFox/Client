@@ -61,6 +61,8 @@ export class GameManagerService {
                 let appPackage = new PixlFox.AppPackage();
 
                 await appPackage.open(packageInfo.packageUrl);
+                console.log(appPackage);
+                
 
                 let snackBarRef = this.snackBar.open("Installing " + game.name, null, { duration: 3000 });
                 // snackBarRef.onAction().subscribe(() => {

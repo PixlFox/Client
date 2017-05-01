@@ -170,6 +170,10 @@ export class AppPackage {
 
         let manifestResponse = await fetch(this.packageUrl, { headers: new Headers({"x-ms-range": "bytes=4-" + (this.manifestLength + 3)})});
         this.manifest = await manifestResponse.json();
+
+        for(let i = 0; i < this.manifest.files.length; i++) {
+            this.manifest.files[i].name = this.manifest.files[i].name.replace(/\\/g, "/");
+        }
     }
 
     public async getInvalidFiles(basePath: string, manifest: any = null) {

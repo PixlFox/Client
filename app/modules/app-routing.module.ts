@@ -1,8 +1,8 @@
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ClientIndexComponent, AuthComponent } from './pages.component';
-import { LibraryComponent } from "./components/library.component";
+import { ClientIndexComponent, AuthComponent } from '../pages.component';
+import { LibraryComponent } from "../components/library.component";
 
 const appRoutes: Routes = [
   {
@@ -12,11 +12,6 @@ const appRoutes: Routes = [
   {
     path: 'auth',
     component: AuthComponent,
-  },
-  {
-    path: 'library',
-    component: LibraryComponent,
-    outlet: 'client-page'
   },
   { path: '', redirectTo: '/auth', pathMatch: 'full' },
   { path: '**', redirectTo: '/auth' }
