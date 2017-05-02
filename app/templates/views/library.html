@@ -1,5 +1,5 @@
 <div style="width: 100%; height: 100%; overflow: auto; padding: 16px;">
-    <div *ngFor="let libraryItem of pixlfoxClient.library" class="game-card" >
+    <div *ngFor="let libraryItem of pixlfoxClient.library" class="game-card" [contextMenu]="libraryContextMenu" [contextMenuSubject]="libraryItem">
         <div class="game-card-img">
             <img src="{{libraryItem.images.tile || 'https://pixlfox.com/img/tile.placeholder.jpg'}}" alt="">
             <div class="overlay">
@@ -29,3 +29,29 @@
         </div>
     </div>
 </div>
+
+<context-menu #libraryContextMenu [useBootstrap4]="true">
+    <ng-template contextMenuItem [visible]="isGameLaunchableBound" (execute)="gameManager.installOrRunAction($event.item, 'launch')">
+        <i class="mdi mdi-play"></i> Launch
+    </ng-template>
+    <ng-template contextMenuItem [visible]="isGameUpdatableBound" (execute)="gameManager.install($event.item)">
+        <i class="mdi mdi-download"></i> Update
+    </ng-template>
+    <ng-template contextMenuItem [visible]="isGameInstallableBound" (execute)="gameManager.install($event.item)">
+        <i class="mdi mdi-download"></i> Install
+    </ng-template>
+    <ng-template contextMenuItem [visible]="isGameInstalledBound" (execute)="openInstallPath($event.item)">
+        <i class="mdi mdi-folder-open"></i> Open Install Path
+    </ng-template>
+    <ng-template contextMenuItem [visible]="isGameSupportedBound" divider="true"></ng-template>
+    <ng-template contextMenuItem (execute)="viewStorePage($event.item.id)">
+        <i class="mdi mdi-store"></i> View Store Page
+    </ng-template>
+    <ng-template contextMenuItem [visible]="isGameInstalledBound" divider="true"></ng-template>
+    <ng-template contextMenuItem [visible]="isGameInstalledBound">
+        <i class="mdi mdi-settings"></i> Settings
+    </ng-template>
+    <ng-template contextMenuItem [visible]="isGameInstalledBound" (execute)="gameManager.uninstall($event.item)">
+        <i class="mdi mdi-delete"></i> Uninstall
+    </ng-template>
+</context-menu>

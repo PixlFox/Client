@@ -13,7 +13,7 @@ import { LibraryComponent } from "../components/library.component";
 import { ViewPanel } from "../view-panel";
 import { CommunityComponent } from "../components/community.component";
 
-import { ContextMenuModule } from 'angular2-contextmenu';
+import { ContextMenuModule } from 'ngx-contextmenu/bin';
 import { GameViewComponent } from "../components/game-view.component";
 import { ChatComponent } from "../components/chat.component";
 import { ViewPanelService } from "../services/view-panel.service";

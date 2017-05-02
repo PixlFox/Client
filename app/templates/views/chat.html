@@ -24,7 +24,14 @@
         </div>
         <div class="chat-panel" *ngIf="accountId != null">
             <div class="header">
-                <div class="title">{{pixlfoxClient.accounts[accountId]?.displayName}}</div>
+                <div class="title">
+                    <div>{{pixlfoxClient.accounts[accountId]?.displayName}} <small>(@{{pixlfoxClient.accounts[accountId]?.username}})</small></div>
+                    <small>
+                        <span *ngIf="pixlfoxClient.accounts[accountId].status != 'InGame'">{{pixlfoxClient.accounts[accountId].status}}</span>
+                        <span *ngIf="pixlfoxClient.accounts[accountId].status == 'InGame'">Online</span>
+                        <span *ngIf="pixlfoxClient.accounts[accountId].playingGame != null">playing {{pixlfoxClient.accounts[accountId].playingGame?.name}}</span>
+                    </small>
+                </div>
                 <div class="icons">
                     <i style="padding: 6px;" class="mdi mdi-dots-horizontal" [mdMenuTriggerFor]="chatSettingsMenu"></i>
                     <md-menu #chatSettingsMenu="mdMenu">

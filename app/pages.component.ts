@@ -6,7 +6,6 @@ import { AccountInfo } from '../pixlfox';
 import { ViewPanel } from "./view-panel";
 import { CommunityComponent } from "./components/community.component";
 import { LibraryComponent } from "./components/library.component";
-import { ContextMenuService } from "angular2-contextmenu/angular2-contextmenu";
 import { GameViewComponent } from "./components/game-view.component";
 import { ChatComponent } from "./components/chat.component";
 import { ViewPanelService } from "./services/view-panel.service";
@@ -17,7 +16,8 @@ import { DownloadsComponent } from "./components/downloads.component";
 	templateUrl: './app/templates/pages/client-index.html'
 })
 export class ClientIndexComponent implements AfterViewInit {
-	constructor(private router: Router, public pixlfoxClient: PixlFoxClientService, private app: AppComponent, private componentFactoryResolver: ComponentFactoryResolver, private contextMenuService: ContextMenuService, private viewPanelService: ViewPanelService) {
+	private setTimeout = setTimeout;
+	constructor(private router: Router, public pixlfoxClient: PixlFoxClientService, private app: AppComponent, private componentFactoryResolver: ComponentFactoryResolver, private viewPanelService: ViewPanelService) {
 		this.app.isLoading = true;
 
 		window["pixlfoxClient"] = pixlfoxClient;
@@ -42,6 +42,15 @@ export class ClientIndexComponent implements AfterViewInit {
 		this.viewPanelService.loadView("default", LibraryComponent);
 	}
 
+	public search(searchQuery: string) {
+		if(searchQuery.startsWith('@')) {
+			this.viewProfile(searchQuery.substring(1));
+		}
+		else if(searchQuery.startsWith("http://") || searchQuery.startsWith("https://")) {
+			this.viewBrowser(searchQuery);
+		}
+	}
+
 	public viewProfile(accountId: string) {
 		this.viewPanelService.loadView("default", CommunityComponent).navigate("https://pixlfox.com/@" + accountId);
 	}
@@ -54,8 +63,8 @@ export class ClientIndexComponent implements AfterViewInit {
 		this.viewPanelService.loadView("default", LibraryComponent);
 	}
 
-	public viewBrowser() {
-		this.viewPanelService.loadView("default", CommunityComponent).navigate("https://pixlfox.com");
+	public viewBrowser(url: string = "https://pixlfox.com") {
+		this.viewPanelService.loadView("default", CommunityComponent).navigate(url);
 	}
 
 	public viewDownloads() {

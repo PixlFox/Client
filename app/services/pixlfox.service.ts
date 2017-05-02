@@ -22,6 +22,10 @@ export class PixlFoxClientService {
     public rtc: PixlFox.RTCConnection = null;
     public libraryPath: string = path.join(Electron.remote.app.getPath("userData"), "library");
 
+    public searchQuery: string = "";
+    public searchExpanded: boolean = false;
+    public searchResults = [];
+
     public get currentPlatform(): string {
         return process.platform;
     }
@@ -121,6 +125,12 @@ export class PixlFoxClientService {
             this.library = library;
             this.refreshAllLocalLibraryData();
         });
+    }
+
+    public search(searchQuery: string) {
+        this.api.search(searchQuery).then((results) => {
+            this.searchResults = results;
+        })
     }
 
     public setAccountStatus(status: string) {

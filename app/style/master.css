@@ -8,10 +8,6 @@ body {
     overflow: hidden;
 }
 
-body.maximized {
-    padding: 3px;
-}
-
 header {
     height: 70px;
     width: 100%;
@@ -357,6 +353,7 @@ header .account-info-tile .text-wrapper .display-info {
     background-color: #2a2b2d;
     border-radius: 0;
     border: none;
+    padding: 3px 0;
 }
 
 .dropdown-menu.context-menu {
@@ -375,15 +372,37 @@ header .account-info-tile .text-wrapper .display-info {
     background-color: #616161;
 }
 
-.dropdown-item {
+.dropdown-item,
+.dropdown-menu li {
     color: #BBBBBB !important;
     font-size: 13px;
     cursor: pointer;
+    width: 100%;
 }
 
-.dropdown-item:focus, .dropdown-item:hover {
+.dropdown-menu li a {
+    width: 100%;
+    display: block;
+    padding: 3px 1.5rem;
+    color: #BBBBBB !important;
+    text-decoration: none;
+}
+
+.dropdown-menu li.divider {
+    background-color: #616161;
+    height: 1px;
+    width: 100%;
+    margin: 3px 0;
+}
+
+.dropdown-item:focus, .dropdown-item:hover,
+.dropdown-menu li:focus, .dropdown-menu li:hover {
     color: #FFFFFF !important;
     background-color: #3a3b3d;
+}
+
+.dropdown-menu li:focus a, .dropdown-menu li:hover a {
+    color: #FFFFFF !important;
 }
 
 .account-info .dropdown-menu {
@@ -391,7 +410,8 @@ header .account-info-tile .text-wrapper .display-info {
     margin-bottom: 0;
 }
 
-.dropdown-item i {
+.dropdown-item i,
+.dropdown-menu li i {
     margin-left: -18px;
     margin-right: 3px;
 }
@@ -792,15 +812,15 @@ header .account-info-tile .text-wrapper .display-info {
     transition: border-left-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }*/
 
-html.maximized {
+html.padded {
     padding: 5px;
 }
 
-html.maximized .content{
+html.padded .content{
     padding: 0 5px;
 }
 
-html.maximized .titlebar {
+html.padded .titlebar {
     padding: 5px
 }
 

@@ -41,6 +41,12 @@ export class Api {
         .then((response) => response.json())
         .then((response: any) => response);
     }
+
+    public search (searchQuery: string) {
+        return fetch(API_ENDPOINT + "/search?q=" + searchQuery, { method: 'GET', headers: new Headers({ "PixlFox-OAuthToken": this.authToken }) })
+        .then((response) => response.json())
+        .then((response: any) => response);
+    }
 }
 
 export class RTCConnection {
@@ -58,6 +64,12 @@ export class RTCConnection {
     }
 
     private onClose(reason: string): void {
+        this.socket.onmessage = null;
+        this.socket.onclose = null;
+        this.socket.onerror = null;
+        this.socket.onopen = null;
+        this.socket = null;
+        
         setTimeout(() => this.connect(), 5000);
         console.log('[RTC] Connection to RTC server lost: ' + reason);
     }

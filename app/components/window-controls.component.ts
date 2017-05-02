@@ -21,16 +21,42 @@ export class WindowControlsComponent {
         var self = this;
         this.window = electron.remote.getCurrentWindow();
         
-        this.window.on("maximize", () => {
-            this.isWindowMaximized = true;
-            cd.detectChanges();
-            jQuery('html').addClass('maximized');
-        });
-        this.window.on("unmaximize", () => {
-            this.isWindowMaximized = false;
-            cd.detectChanges();
-            jQuery('html').removeClass('maximized');
-        });
+        if(process.platform == "darwin") {
+            this.window.on("enter-full-screen", () => {
+                this.isWindowMaximized = true;
+                cd.detectChanges();
+                jQuery('html').addClass('maximized');
+                if(process.platform == "win32") {
+                    jQuery('html').addClass("padded");
+                }
+            });
+            this.window.on("leave-full-screen", () => {
+                this.isWindowMaximized = false;
+                cd.detectChanges();
+                jQuery('html').removeClass('maximized');
+                if(process.platform == "win32") {
+                    jQuery('html').removeClass("padded");
+                }
+            });
+        }
+        else {
+            this.window.on("maximize", () => {
+                this.isWindowMaximized = true;
+                cd.detectChanges();
+                jQuery('html').addClass('maximized');
+                if(process.platform == "win32") {
+                    jQuery('html').addClass("padded");
+                }
+            });
+            this.window.on("unmaximize", () => {
+                this.isWindowMaximized = false;
+                cd.detectChanges();
+                jQuery('html').removeClass('maximized');
+                if(process.platform == "win32") {
+                    jQuery('html').removeClass("padded");
+                }
+            });
+        }
     }
 
     closeWindow() {
@@ -38,11 +64,21 @@ export class WindowControlsComponent {
     }
 
     maximizeWindow() {
-        this.window.maximize();
+        if(process.platform == "darwin") {
+            this.window.setFullScreen(true);
+        }
+        else {
+            this.window.maximize();
+        }
     }
 
     restoreWindow() {
-        this.window.unmaximize();
+        if(process.platform == "darwin") {
+            this.window.setFullScreen(false);
+        }
+        else {
+            this.window.unmaximize();
+        }
     }
 
     minimizeWindow() {

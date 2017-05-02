@@ -18,8 +18,14 @@
 		</span>
 	</div>
 	<div class="search">
-		<input type="text" placeholder="Search..." />
-		<i class="mdi mdi-magnify"></i>
+		<input #searchInput [(value)]="pixlfoxClient.searchQuery" (keyup.enter)="search(searchInput.value);" type="text" placeholder="Search..." />
+		<i class="mdi mdi-magnify" (click)="earch(searchInput.value);"></i>
+		<!--<div class="search-expanded" *ngIf="pixlfoxClient.searchExpanded" style="background-color: white; width: 100%; height: 300px; position: absolute; top: 70px; left: 0; z-index: 1000;">
+			<div *ngFor="let searchResult of pixlfoxClient.searchResults" (click)="viewProfile(searchResult.username)">
+				<img class="profile-image" style="width: 35px; height: 35px;" src="{{searchResult.profileImageUrl}}" />
+				<span>{{searchResult.displayName}}</span>
+			</div>
+		</div>-->
 	</div>
 	<div class="account-info-tile dropdown">
 		<div data-toggle="dropdown">
@@ -116,11 +122,11 @@
 </div>
 
 <context-menu #friendsContextMenu [useBootstrap4]="true">
-  <template contextMenuItem (execute)="viewProfile($event.item.username)">
+  <ng-template class="dropdown-item" contextMenuItem (execute)="viewProfile($event.item.username)">
     <i class="mdi mdi-account"></i> View Profile
-  </template>
+  </ng-template>
   <!--<template contextMenuItem divider="true"></template>-->
-  <template contextMenuItem (execute)="viewChat($event.item.id)">
+  <ng-template contextMenuItem (execute)="viewChat($event.item.id)">
     <i class="mdi mdi-message"></i> Chat
-  </template>
+  </ng-template>
 </context-menu>
