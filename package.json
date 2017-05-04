@@ -38,6 +38,7 @@
     "electron-api-docs": "^1.4.16",
     "electron-config": "^0.2.1",
     "emojione": "^2.2.7",
+    "express": "^4.15.2",
     "keyboardjs": "^2.3.3",
     "linq": "^3.0.8",
     "lodash": "^4.17.4",

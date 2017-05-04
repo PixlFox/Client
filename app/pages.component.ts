@@ -11,13 +11,14 @@ import { ChatComponent } from "./components/chat.component";
 import { ViewPanelService } from "./services/view-panel.service";
 import { SettingsComponent } from "./components/settings.component";
 import { DownloadsComponent } from "./components/downloads.component";
+import { PixlFoxRPCService } from "./services/pixlfox-rpc.service";
 
 @Component({
 	templateUrl: './app/templates/pages/client-index.html'
 })
 export class ClientIndexComponent implements AfterViewInit {
 	private setTimeout = setTimeout;
-	constructor(private router: Router, public pixlfoxClient: PixlFoxClientService, private app: AppComponent, private componentFactoryResolver: ComponentFactoryResolver, private viewPanelService: ViewPanelService) {
+	constructor(private router: Router, public pixlfoxClient: PixlFoxClientService, private app: AppComponent, private componentFactoryResolver: ComponentFactoryResolver, private viewPanelService: ViewPanelService, private rpcService: PixlFoxRPCService) {
 		this.app.isLoading = true;
 
 		window["pixlfoxClient"] = pixlfoxClient;
@@ -108,7 +109,7 @@ export class AuthComponent implements OnInit {
 				}
 				if(url.host == "pixlfox.com" && url.pathname == "/client/auth") {
 					if(url.searchParams.get("state") == "cancelled") {
-						authWebView.loadURL("https://pixlfox.com/oauth2/authorize?display=integrated&response_type=token&client_id=765ab75f27354b1cc48e08d47bcb02d3&scope=profile.email.read,profile.friends.read,rtc.connect,rtc.message&redirect_uri=https://pixlfox.com/client/auth");
+						authWebView.loadURL("https://pixlfox.com/oauth2/authorize?display=integrated&response_type=token&client_id=765ab75f27354b1cc48e08d47bcb02d3&scope=profile.email.read,profile.friends.read,rtc.connect,rtc.message,game.session&redirect_uri=https://pixlfox.com/client/auth");
 						window.close();
 					}
 					else if(url.searchParams.get("state") == "complete") {

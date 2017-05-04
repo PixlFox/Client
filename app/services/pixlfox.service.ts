@@ -48,6 +48,18 @@ export class PixlFoxClientService {
         return friends;
     }
 
+    public get accountsEnum() {
+        let accounts = new Array<PixlFox.AccountInfo>();
+
+        this.friendIds.forEach(friendId => {
+            accounts.push(this.accounts[friendId]);
+        });
+
+        accounts.push(this.accountInfo);
+
+        return enumerable.from(accounts);
+    }
+
     public get friendsEnum() {
         return enumerable.from(this.friends);
     }

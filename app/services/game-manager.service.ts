@@ -29,12 +29,13 @@ export class GameManagerService {
         let gameInstallPath = game["installPath"];
         let gameManifest = game["packageManifest"];
         let actionData = gameManifest == null ? null : gameManifest.info.actions[action];
+        let gameSession = await this.pixlfoxClient.api.newGameSession(game.id);
 
         if(actionData != null) {
             this.pixlfoxClient.currentlyPlayingId = game.id;
             this.pixlfoxClient.setAccountStatus(this.pixlfoxClient.accountInfo.status);
-            let process = exec(actionData.executable, { cwd: gameInstallPath });
-            process.on("exit", () => {
+            let gameProcess = exec(actionData.executable, { cwd: gameInstallPath, env: Object.assign({ "PIXLFOX_GAME_SESSION": gameSession.gameSessionToken, "PIXLFOX_RPC_ENDPOINT": "http://rpc.pixlfox.net:8850" }, process.env) });
+            gameProcess.on("exit", () => {
                 this.pixlfoxClient.currentlyPlayingId = null;
                 this.pixlfoxClient.setAccountStatus(this.pixlfoxClient.accountInfo.status);
             });

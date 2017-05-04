@@ -25,6 +25,7 @@ import { SettingsComponent } from "../components/settings.component";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MdSlideToggleModule, MdCardModule, MdProgressBarModule, MdTooltipModule, MdSnackBarModule, MdMenuModule, MdIconModule } from '@angular/material';
 import { DownloadsComponent } from "../components/downloads.component";
+import { PixlFoxRPCService } from "../services/pixlfox-rpc.service";
 
 @NgModule({
 	imports: [
@@ -53,6 +54,7 @@ import { DownloadsComponent } from "../components/downloads.component";
 		ViewPanelService,
 		PixlFoxClientService,
 		GameManagerService,
+		PixlFoxRPCService
 	],
 	entryComponents: [
 		LibraryComponent,

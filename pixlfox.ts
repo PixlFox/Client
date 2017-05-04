@@ -47,6 +47,12 @@ export class Api {
         .then((response) => response.json())
         .then((response: any) => response);
     }
+
+    public newGameSession (gameId: string) {
+        return fetch(API_ENDPOINT + "/game-session/" + gameId + "/new", { method: 'GET', headers: new Headers({ "PixlFox-OAuthToken": this.authToken }) })
+        .then((response) => response.json())
+        .then((response: any) => response);
+    }
 }
 
 export class RTCConnection {
@@ -69,7 +75,7 @@ export class RTCConnection {
         this.socket.onerror = null;
         this.socket.onopen = null;
         this.socket = null;
-        
+
         setTimeout(() => this.connect(), 5000);
         console.log('[RTC] Connection to RTC server lost: ' + reason);
     }
