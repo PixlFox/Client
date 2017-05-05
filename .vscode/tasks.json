@@ -15,7 +15,7 @@
                 "--arch", "x64",
                 "--asar=true",
                 "--prune=true",
-                "--icon", "./logo-icon-white-128.ico",
+                "--icon", "./branding/logo_icon_round_512.ico",
                 "--app-copyright", "Copyright (C) 2017 PixlFox LLC. All rights reserved.",
                 "--win32metadata.CompanyName=PixlFox LLC",
                 "--win32metadata.ProductName=PixlFox Client",

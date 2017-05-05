@@ -42,7 +42,7 @@ function parseArgs(args: string[]) {
 
 
 function createWindow() {
-	mainWindow = new Electron.BrowserWindow({ width: 1014, height: 700, minWidth: 800, minHeight: 600, frame: false, backgroundColor: "#404257", icon: "logo-icon-white-128.ico" });
+	mainWindow = new Electron.BrowserWindow({ width: 1014, height: 700, minWidth: 800, minHeight: 600, frame: false, backgroundColor: "#404257", icon: "branding/logo_icon_round_512.ico" });
 
 	mainWindow.loadURL(url.format({
 		pathname: path.join(__dirname, 'index.html'),
@@ -114,7 +114,7 @@ Electron.app.on('ready', function() {
 		]);
 
 	if(process.platform == 'win32') {
-		tray = new Electron.Tray(Electron.nativeImage.createFromPath(__dirname + '/logo-icon-white-32.ico'));
+		tray = new Electron.Tray(Electron.nativeImage.createFromPath(__dirname + '/branding/logo_icon_round_512.ico'));
 
 		tray.setToolTip('PixlFox Client');
 		tray.setContextMenu(contextMenu);
