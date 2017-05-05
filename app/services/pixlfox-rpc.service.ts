@@ -33,7 +33,13 @@ export class PixlFoxRPCService {
             res.send(this.pixlfoxClient.friends);
         });
 
-        this.app.listen(8850, () => {
+        this.app.get("/game-session/:gameId/new", (req, res) => {
+            this.pixlfoxClient.api.newGameSession(req.params.gameId).then((gameSession) => {
+                res.send(gameSession);
+            });
+        });
+
+        this.app.listen(8850, '127.0.0.1', () => {
             console.log("RPC service running on port 8850.");
         });
      }
