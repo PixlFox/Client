@@ -42,7 +42,15 @@ function parseArgs(args: string[]) {
 
 
 function createWindow() {
-	mainWindow = new Electron.BrowserWindow({ width: 1014, height: 700, minWidth: 800, minHeight: 600, frame: false, backgroundColor: "#404257", icon: "branding/logo_icon_round_512.ico" });
+	let icon = "branding/logo_icon_round_512.png";
+	if(process.platform == "win32") {
+		icon = "branding/logo_icon_round_512.ico";
+	}
+	else if(process.platform == "darwin") {
+		icon = "branding/logo_icon_round_512.icns";
+	}
+
+	mainWindow = new Electron.BrowserWindow({ width: 1014, height: 700, minWidth: 800, minHeight: 600, frame: false, backgroundColor: "#404257", icon: icon });
 
 	mainWindow.loadURL(url.format({
 		pathname: path.join(__dirname, 'index.html'),

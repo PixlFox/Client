@@ -7,7 +7,8 @@
     "start": "electron .",
     "pre_compile": "babel ./node_modules/ngx-contextmenu/lib -d ./node_modules/ngx-contextmenu/bin",
     "compile": "tsc -p .",
-    "build_win32_x64": "electron-packager ./ --overwrite --out=./bin --platform=win32 --arch=x64 --asar=true --prune=true --icon=./logo-icon-white-128.ico --app-copyright=\"Copyright (C) 2017 PixlFox LLC. All rights reserved.\" --win32metadata.CompanyName=\"PixlFox LLC\" --win32metadata.ProductName=\"PixlFox Client\" --win32metadata.FileDescription=\"PixlFox Client\" --win32metadata.OriginalFilename=pixlfox.exe"
+    "build_win32_x64": "electron-packager ./ --overwrite --out=./bin --platform=win32 --arch=x64 --asar=true --prune=true --icon=./branding/logo_icon_round_512.ico --app-copyright=\"Copyright (C) 2017 PixlFox LLC. All rights reserved.\" --win32metadata.CompanyName=\"PixlFox LLC\" --win32metadata.ProductName=\"PixlFox Client\" --win32metadata.FileDescription=\"PixlFox Client\" --win32metadata.OriginalFilename=pixlfox.exe",
+    "build_darwin_x64": "electron-packager ./ --overwrite --out=../client_bin --platform=darwin --arch=x64 --asar=true --prune=true --icon=./branding/logo_icon_round_512.icns"
   },
   "author": "PixlFox LLC",
   "devDependencies": {
