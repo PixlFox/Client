@@ -12,18 +12,17 @@ header {
     height: 70px;
     width: 100%;
     background: #404257;
-    padding-right: 85px;
     display: flex;
 }
 
 header .title {
     font-size: 16px;
-    margin: 23px 32px;
+    padding: 23px 32px;
     font-weight: 600;
     text-transform: uppercase;
     float: left;
     color: #FFFFFF;
-    width: 125px;
+    width: 189px;
 }
 
 header .icon {
@@ -66,10 +65,10 @@ header .search i {
 
 header .account-info-tile {
     float: right;
-    margin: 11px;
+    padding: 11px;
     cursor: pointer;
     -webkit-app-region: no-drag;
-    width: 175px;
+    width: 197px;
     text-align: center;
 }
 
@@ -102,6 +101,10 @@ header .account-info-tile .text-wrapper .display-info {
     display: block;
     color: #858aa7;
     font-size: 10px;
+}
+
+header .spacer {
+    width: 85px;
 }
 
 .titlebar {
@@ -177,13 +180,13 @@ header .account-info-tile .text-wrapper .display-info {
     overflow: auto;
     position: relative;
     background-color: #FFFFFF;
-    border-right: 1px solid #e5ecf6;
 }
 
 .view-panel {
     float: left;
     height: 100%;
     width: calc(100% - 140px);
+    background-color: #edf2f6;
 }
 
 .friends-panel {
@@ -194,7 +197,6 @@ header .account-info-tile .text-wrapper .display-info {
     overflow: auto;
     position: relative;
     background-color: #FFFFFF;
-    border-left: 1px solid #e5ecf6;
 }
 
 .friends-list,
@@ -212,7 +214,7 @@ header .account-info-tile .text-wrapper .display-info {
 .nav-list .list-group-item {
     border: none;
     padding: 8px;
-    background-color: #FFFFFF;
+    background-color: transparent;
     cursor: pointer;
     font-size: 13px;
     min-height: 55px;
@@ -222,6 +224,7 @@ header .account-info-tile .text-wrapper .display-info {
     margin: 6px 0px;
     color: #9ba0be;
     transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: transparent;
 }
 
 .nav-list .list-group-item:hover {
@@ -346,7 +349,6 @@ header .account-info-tile .text-wrapper .display-info {
     top: 0;
     left: 0;
     overflow: hidden;
-    background-color: #edf2f6;
 }
 
 .dropdown-menu {
@@ -829,27 +831,15 @@ body.dark-theme {
     color: #878da7;
 }
 
-body.dark-theme .content {
-    background-color: #2e3440;
-}
-
 body.dark-theme .nav-panel,
 body.dark-theme .friends-panel {
     background-color: #1e2430;
 }
 
-body.dark-theme .nav-panel {
-    border-right-color: #212631;
-}
-
-body.dark-theme .friends-panel {
-    border-left-color: #212631;
-}
-
-body.dark-theme .friends-list .list-group-item,
+/*body.dark-theme .friends-list .list-group-item,
 body.dark-theme .nav-list .list-group-item {
     background-color: #1e2430;
-}
+}*/
 
 body.dark-theme .friends-panel .thumb-box .status {
     border: 2px solid #1e2430;
@@ -881,4 +871,45 @@ body.dark-theme .panel .header,
 body.dark-theme .chat-list-item,
 body.dark-theme .chat-list {
     border-color: #212631;
+}
+
+body.dark-theme .view-panel {
+    background-color: rgb(46, 52, 64);
+}
+
+/* GLASS */
+body.glass header {
+    background-color: transparent;
+}
+
+body.glass header .icon {
+    background-color: rgba(33, 150, 243, .8);
+}
+
+body.glass header .title,
+body.glass header .account-info-tile,
+body.glass header .spacer {
+    background-color: rgba(64, 66, 87, .8);
+}
+
+body.glass header .search {
+    background-color: rgba(74, 76, 99, .8);
+}
+
+body.glass .view-panel {
+    background-color: rgba(237, 242, 246, .9);
+}
+
+body.glass .nav-panel,
+body.glass .friends-panel {
+    background-color: rgba(255, 255, 255, .9);
+}
+
+body.glass.dark-theme .nav-panel,
+body.glass.dark-theme .friends-panel {
+    background-color: rgba(33, 38, 49, .9);
+}
+
+body.glass.dark-theme .view-panel {
+    background-color: rgba(46, 52, 64, .9);
 }

@@ -12,13 +12,16 @@ import { ViewPanelService } from "./services/view-panel.service";
 import { SettingsComponent } from "./components/settings.component";
 import { DownloadsComponent } from "./components/downloads.component";
 import { PixlFoxRPCService } from "./services/pixlfox-rpc.service";
+import * as PixlFox from '../pixlfox';
+import { MdDialog } from "@angular/material";
+import { GameSessionInfoDialog } from "./components/dialogs.component";
 
 @Component({
 	templateUrl: './app/templates/pages/client-index.html'
 })
 export class ClientIndexComponent implements AfterViewInit {
 	private setTimeout = setTimeout;
-	constructor(private router: Router, public pixlfoxClient: PixlFoxClientService, private app: AppComponent, private componentFactoryResolver: ComponentFactoryResolver, private viewPanelService: ViewPanelService, private rpcService: PixlFoxRPCService) {
+	constructor(private router: Router, public pixlfoxClient: PixlFoxClientService, private app: AppComponent, private componentFactoryResolver: ComponentFactoryResolver, private viewPanelService: ViewPanelService, private rpcService: PixlFoxRPCService, private dialog: MdDialog) {
 		this.app.isLoading = true;
 
 		window["pixlfoxClient"] = pixlfoxClient;
@@ -56,8 +59,16 @@ export class ClientIndexComponent implements AfterViewInit {
 		this.viewPanelService.loadView("default", CommunityComponent).navigate("https://pixlfox.com/@" + accountId);
 	}
 
-	public viewChat(accountId: string) {
-		this.viewPanelService.loadView("default", ChatComponent).accountId = accountId;
+	public viewChat(account: PixlFox.AccountInfo) {
+		if(account == null) {
+			this.viewPanelService.loadView("default", ChatComponent).accountId = null;
+		}
+		else if(account.friendState == "Accepted") {
+			this.viewPanelService.loadView("default", ChatComponent).accountId = account.id;
+		}
+		else {
+			this.viewPanelService.loadView("default", CommunityComponent).navigate("https://pixlfox.com/@" + account.username);
+		}
 	}
 
 	public viewLibrary() {
@@ -82,6 +93,16 @@ export class ClientIndexComponent implements AfterViewInit {
         viewInstance.game = game;
 	}
 
+	public viewGameInfo(account: PixlFox.AccountInfo) {
+		var dialogRef = this.dialog.open(GameSessionInfoDialog);
+		dialogRef.componentInstance.account = account;
+	}
+
+	public canChatWithAccountBound = this.canChatWithAccount.bind(this);
+	public canChatWithAccount(account: PixlFox.AccountInfo): boolean {
+		return account.friendState == "Accepted";
+	}
+
 	public log(message: any) {
 		console.log(message);
 	}
@@ -101,9 +122,7 @@ export class AuthComponent implements OnInit {
 		authWebView.addEventListener("load-commit", (event:any) => {
 			if(event.isMainFrame) {
 				var url: any = new URL(event.url);
-
-				console.log("AuthURL: ", url );
-
+				
 				if(url.host == "pixlfox.com" && (url.pathname == "/oauth2/authorize" || url.pathname == "/login")) {
 					this.app.isLoading = false;
 				}

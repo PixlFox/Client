@@ -12,9 +12,11 @@ import * as ElectronConfig from 'electron-config';
 export class AppComponent {
 	private config = new ElectronConfig();
 	private _useDarkTheme: boolean;
+	private _useGlassTheme: boolean;
 
 	constructor() {
 		this.useDarkTheme = this.config.get("useDarkTheme") || false;
+		this.useGlassTheme = this.config.get("useGlassTheme") || false;
 	}
 
 	public set useDarkTheme(value: boolean) {
@@ -27,6 +29,22 @@ export class AppComponent {
 
 		this._useDarkTheme = value;
 		this.config.set("useDarkTheme", value);
+	}
+
+	public get useGlassTheme(): boolean {
+		return this._useGlassTheme;
+	}
+
+	public set useGlassTheme(value: boolean) {
+		if (value) {
+			jQuery('body').addClass('glass');
+		}
+		else {
+			jQuery('body').removeClass('glass');
+		}
+
+		this._useGlassTheme = value;
+		this.config.set("useGlassTheme", value);
 	}
 
 	public get useDarkTheme(): boolean {

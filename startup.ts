@@ -2,6 +2,7 @@
 import * as Electron from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+import * as os from 'os';
 
 let canQuit = false;
 let mainWindow: Electron.BrowserWindow;
@@ -50,7 +51,15 @@ function createWindow() {
 		icon = "branding/logo_icon_round_512.icns";
 	}
 
-	mainWindow = new Electron.BrowserWindow({ width: 1014, height: 700, minWidth: 800, minHeight: 600, frame: false, backgroundColor: "#404257", icon: icon });
+	mainWindow = new Electron.BrowserWindow({ width: 1014, height: 700, minWidth: 800, minHeight: 600, frame: false, transparent: true, icon: icon, show: false });
+
+	mainWindow.on('ready-to-show',function() {
+		if((process.platform == "win32" && os.release().startsWith("10")) || process.platform == "darwin") {
+			var electronVibrancy = require('electron-vibrancy');
+			electronVibrancy.SetVibrancy(mainWindow, 1);
+		}
+		mainWindow.show();
+	});
 
 	mainWindow.loadURL(url.format({
 		pathname: path.join(__dirname, 'index.html'),

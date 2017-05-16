@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PixlFoxClientService } from "./pixlfox.service";
 import * as express from 'express';
+import * as path from 'path';
 
 @Injectable()
 export class PixlFoxRPCService {
@@ -9,11 +10,14 @@ export class PixlFoxRPCService {
     constructor(private pixlfoxClient: PixlFoxClientService) {
         console.log("Starting RPC service.");
 
+        this.app.use('/static', express.static("rpc"));
+
         this.app.get("/", (req, res) => {
             res.send({
                 "rpcVersion": "1.0.0",
                 "clientVersion": "1.0.0",
-                "platform": process.platform
+                "platform": process.platform,
+                "arch": process.arch
             });
         });
 

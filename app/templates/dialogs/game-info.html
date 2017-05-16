@@ -1,0 +1,9 @@
+<h1 md-dialog-title>{{account?.displayName}}</h1>
+<div md-dialog-content>
+    <span *ngIf="account?.playingGame">is currently playing {{account?.playingGame?.name}}.</span>
+    <span *ngIf="!account?.playingGame">is not currently playing a game.</span>
+    <!--Currently in the main menu of {{account?.playingGame?.name}}.-->
+</div>
+<!--<div md-dialog-actions style="justify-content: flex-end;">
+  <button md-button (click)="dialogRef.close('Option 1')">Join Game</button>
+</div>-->

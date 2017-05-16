@@ -152,6 +152,8 @@ export class AccountInfo {
     public displayName: string;
     public profileImageUrl: string;
     public status: string;
+    public friendState: string;
+    public canAcceptFriend: boolean;
 
     public playingGame: GameInfo;
 

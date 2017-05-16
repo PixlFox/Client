@@ -47,6 +47,7 @@
 			<a class="dropdown-item" (click)="pixlfoxClient.setAccountStatus('Offline')"><i class="mdi mdi-circle status offline"></i> Offline</a>
 		</div>
 	</div>
+	<div class="spacer"></div>
 </header>
 <div class="content">
 	<div class="nav-panel">
@@ -84,13 +85,16 @@
 
 	<div class="friends-panel">
 		<ul class="list-group friends-list">
-			<li *ngFor="let friend of pixlfoxClient.friends | orderBy : ['statusSorting', 'displayName']" class="list-group-item" mdTooltip="{{friend.displayName}}" mdTooltipPosition="left" (click)="viewChat(friend.id)" [contextMenu]="friendsContextMenu" [contextMenuSubject]="friend">
+			<li *ngFor="let friend of pixlfoxClient.friendsEnum.where('e => e.friendState == \'Accepted\' || e.canAcceptFriend').toArray() | orderBy : ['statusSorting', 'displayName']" class="list-group-item" mdTooltip="{{friend.displayName}}" mdTooltipPosition="left" (click)="viewChat(friend)" [contextMenu]="friendsContextMenu" [contextMenuSubject]="friend">
 					<div class="thumb-box">
 						<img class="profile-image" src="{{friend.profileImageUrl}}" />
-						<div class="status" [ngClass]="{online: friend.status == 'Online', offline: friend.status == 'Offline', away: friend.status == 'Away', ingame: friend.status == 'InGame'}"></div>
-						<div class="notify-count" *ngIf="pixlfoxClient.getUnreadChatMessages(friend.id).length != 0">
+						<div *ngIf="friend.friendState == 'Accepted'" class="status" [ngClass]="{online: friend.status == 'Online', offline: friend.status == 'Offline', away: friend.status == 'Away', ingame: friend.status == 'InGame'}"></div>
+						<div class="notify-count" *ngIf="pixlfoxClient.getUnreadChatMessages(friend.id).length != 0 && friend.friendState != 'Pending'">
 							<span *ngIf="pixlfoxClient.getUnreadChatMessages(friend.id).length < 100">{{pixlfoxClient.getUnreadChatMessages(friend.id).length}}</span>
 							<span *ngIf="pixlfoxClient.getUnreadChatMessages(friend.id).length >= 100">99+</span>
+						</div>
+						<div class="notify-count" style="background-color: cadetblue;" *ngIf="friend.friendState == 'Pending'">
+							<span>+</span>
 						</div>
 					</div>
 				<span class="clearfix"></span>
@@ -125,8 +129,17 @@
   <ng-template class="dropdown-item" contextMenuItem (execute)="viewProfile($event.item.username)">
     <i class="mdi mdi-account"></i> View Profile
   </ng-template>
-  <!--<template contextMenuItem divider="true"></template>-->
-  <ng-template contextMenuItem (execute)="viewChat($event.item.id)">
+  <ng-template contextMenuItem [visible]="canChatWithAccountBound" (execute)="viewChat($event.item)">
     <i class="mdi mdi-message"></i> Chat
+  </ng-template>
+  <ng-template contextMenuItem divider="true"></ng-template>
+  <ng-template contextMenuItem let-item [visible]="false">
+    <i class="mdi mdi-gamepad-variant"></i> Playing {{item?.playingGame?.name}}
+  </ng-template>
+  <ng-template contextMenuItem (execute)="viewGameInfo($event.item)">
+    <i class="mdi mdi-information-outline"></i> View Game Info
+  </ng-template>
+  <ng-template contextMenuItem [visible]="false">
+    <i class="mdi mdi-play"></i> Join Game
   </ng-template>
 </context-menu>

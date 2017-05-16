@@ -23,9 +23,10 @@ import { GameManagerService } from "../services/game-manager.service";
 import { SettingsComponent } from "../components/settings.component";
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { MdSlideToggleModule, MdCardModule, MdProgressBarModule, MdTooltipModule, MdSnackBarModule, MdMenuModule, MdIconModule } from '@angular/material';
+import { MaterialModule } from '@angular/material';
 import { DownloadsComponent } from "../components/downloads.component";
 import { PixlFoxRPCService } from "../services/pixlfox-rpc.service";
+import { GameSessionInfoDialog } from "../components/dialogs.component";
 
 @NgModule({
 	imports: [
@@ -35,11 +36,10 @@ import { PixlFoxRPCService } from "../services/pixlfox-rpc.service";
 		ContextMenuModule,
 		ViewportModule,
 		BrowserAnimationsModule,
-		[MdSlideToggleModule, MdCardModule, MdProgressBarModule, MdTooltipModule, MdSnackBarModule, MdMenuModule, MdIconModule]
+		MaterialModule
 	],
 	exports: [
-		MessagePipe,
-		[MdSlideToggleModule, MdCardModule, MdProgressBarModule, MdTooltipModule, MdSnackBarModule, MdMenuModule, MdIconModule]
+		MessagePipe
 	],
 	declarations: [
 		AppComponent,
@@ -48,6 +48,7 @@ import { PixlFoxRPCService } from "../services/pixlfox-rpc.service";
 		ViewPanel,
 		[ClientIndexComponent, AuthComponent],
 		[LibraryComponent, CommunityComponent, GameViewComponent, ChatComponent, DownloadsComponent, SettingsComponent],
+		[GameSessionInfoDialog],
 		MessagePipe
 	],
 	providers: [
@@ -62,7 +63,8 @@ import { PixlFoxRPCService } from "../services/pixlfox-rpc.service";
 		GameViewComponent,
 		ChatComponent,
 		DownloadsComponent,
-		SettingsComponent
+		SettingsComponent,
+		[GameSessionInfoDialog]
 	],
 	bootstrap: [AppComponent],
 	schemas: [
