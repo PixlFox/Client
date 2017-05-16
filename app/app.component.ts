@@ -16,7 +16,14 @@ export class AppComponent {
 
 	constructor() {
 		this.useDarkTheme = this.config.get("useDarkTheme") || false;
-		this.useGlassTheme = this.config.get("useGlassTheme") || false;
+		if(process.platform == "win32" || process.platform == "darwin") {
+			this.useGlassTheme = this.config.get("useGlassTheme") || true;
+		}
+		else {
+			this.useGlassTheme = false;
+		}
+
+		jQuery('body').addClass('platform-' + process.platform);
 	}
 
 	public set useDarkTheme(value: boolean) {

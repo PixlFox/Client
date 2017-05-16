@@ -900,9 +900,18 @@ body.glass .view-panel {
     background-color: rgba(237, 242, 246, .9);
 }
 
+body.platform-darwin.glass .view-panel {
+    background-color: rgba(237, 242, 246, .8);
+}
+
 body.glass .nav-panel,
 body.glass .friends-panel {
     background-color: rgba(255, 255, 255, .9);
+}
+
+body.platform-darwin.glass .nav-panel,
+body.platform-darwin.glass .friends-panel {
+    background-color: rgba(255, 255, 255, .8);
 }
 
 body.glass.dark-theme .nav-panel,
@@ -910,6 +919,15 @@ body.glass.dark-theme .friends-panel {
     background-color: rgba(33, 38, 49, .9);
 }
 
+body.platform-darwin.glass.dark-theme .nav-panel,
+body.platform-darwin.glass.dark-theme .friends-panel {
+    background-color: rgba(33, 38, 49, .8);
+}
+
 body.glass.dark-theme .view-panel {
     background-color: rgba(46, 52, 64, .9);
+}
+
+body.platform-darwin.glass.dark-theme .view-panel {
+    background-color: rgba(46, 52, 64, .8);
 }

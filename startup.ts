@@ -54,9 +54,12 @@ function createWindow() {
 	mainWindow = new Electron.BrowserWindow({ width: 1014, height: 700, minWidth: 800, minHeight: 600, frame: false, transparent: true, icon: icon, show: false });
 
 	mainWindow.on('ready-to-show',function() {
-		if((process.platform == "win32" && os.release().startsWith("10")) || process.platform == "darwin") {
+		if((process.platform == "win32" && os.release().startsWith("10"))) {
 			var electronVibrancy = require('electron-vibrancy');
 			electronVibrancy.SetVibrancy(mainWindow, 1);
+		}
+		else if(process.platform == "darwin") {
+			mainWindow.setVibrancy("dark");
 		}
 		mainWindow.show();
 	});
