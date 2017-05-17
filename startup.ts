@@ -51,7 +51,7 @@ function createWindow() {
 		icon = "branding/logo_icon_round_512.icns";
 	}
 
-	mainWindow = new Electron.BrowserWindow({ width: 1014, height: 700, minWidth: 800, minHeight: 600, frame: false, transparent: true, icon: icon, show: false });
+	mainWindow = new Electron.BrowserWindow({ width: 1014, height: 700, minWidth: 800, minHeight: 600, frame: false, transparent: true, icon: icon, show: false, experimentalFeatures: true });
 
 	mainWindow.on('ready-to-show',function() {
 		if((process.platform == "win32" && os.release().startsWith("10"))) {

@@ -3,7 +3,7 @@
         <div class="game-card-img">
             <img src="{{libraryItem.images.tile || 'https://pixlfox.com/img/tile.placeholder.jpg'}}" alt="">
             <div class="overlay">
-                <div class="btn-group bottom-left" *ngIf="libraryItem['isInstalled'] && !libraryItem['isDownloading'] && libraryItem['supportedPlatforms'] && libraryItem['supportedPlatforms'].indexOf(pixlfoxClient.currentPlatform) != -1">
+                <div class="btn-group bottom-left show-hover" *ngIf="libraryItem['isInstalled'] && !libraryItem['isDownloading'] && libraryItem['supportedPlatforms'] && libraryItem['supportedPlatforms'].indexOf(pixlfoxClient.currentPlatform) != -1">
                     <button class="btn btn-primary" *ngIf="libraryItem['isUpToDate']" (click)="gameManager.installOrRunAction(libraryItem, 'launch')">Launch</button>
                     <button class="btn btn-warning" *ngIf="!libraryItem['isUpToDate']" (click)="gameManager.install(libraryItem)">Update</button>
                     <!--<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -25,7 +25,6 @@
         </div>
         <div class="game-card-caption" (click)="viewGame(libraryItem.id)">
             <h3 class="game-card-title">{{libraryItem.name}}</h3>
-            <p>{{libraryItem.description}}</p>
         </div>
     </div>
 </div>
