@@ -571,12 +571,15 @@ header .spacer {
 }
 
 .game-card .overlay {
-    width: calc(100% - 16px);
-    height: calc(100% - 16px);
+    width: 100%;
+    height: 100%;
     position: absolute;
     top: 0;
     left: 0;
-    margin: 8px;
+}
+
+.game-card .overlay:hover {
+    background-color: rgba(0,0,0,.3);
 }
 
 .overlay .top-left {
@@ -601,6 +604,12 @@ header .spacer {
     position: absolute;
     bottom: 0;
     right: 0;
+}
+
+.overlay .center {
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
 }
 
 .overlay .show-hover {
@@ -877,7 +886,8 @@ body.glass header .icon {
 
 body.glass header .title,
 body.glass header .account-info-tile,
-body.glass header .spacer {
+body.glass header .spacer,
+body.glass .loading {
     background-color: rgba(64, 66, 87, .8);
 }
 
