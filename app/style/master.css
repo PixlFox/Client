@@ -70,6 +70,7 @@ header .account-info-tile {
     -webkit-app-region: no-drag;
     width: 197px;
     text-align: center;
+    overflow: hidden;
 }
 
 header .account-info-tile .thumb-box {
@@ -203,6 +204,7 @@ header .spacer {
 .nav-list {
     height: 100%;
     overflow: auto;
+    overflow-x: hidden;
 }
 
 .nav-list .list-group-item .mdi {
@@ -218,6 +220,17 @@ header .spacer {
     cursor: pointer;
     font-size: 13px;
     min-height: 55px;
+    transition: transform 0.15s ease-in-out;
+}
+
+.friends-list .list-group-item:hover,
+.nav-list .list-group-item:hover {
+    transform: scaleX(1.08) scaleY(1.08);
+}
+
+.friends-list .list-group-item:active,
+.nav-list .list-group-item:active {
+    transform: scaleX(0.96) scaleY(0.96);
 }
 
 .nav-list .list-group-item {
@@ -506,7 +519,7 @@ header .spacer {
 }
 
 .chat-list-item.selected {
-    background-color: #e5ecf4;
+    background-color: rgba(229, 236, 244, .6);
 }
 
 .chat-list-item .profile-image {
@@ -568,13 +581,18 @@ header .spacer {
     position: relative;
     width: 165px;
     height: 220px;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
     transition: all 0.15s ease-in-out;
 }
 
 .game-card .game-card-img:hover {
-    box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
-    transform: scaleX(1.01) scaleY(1.02);
+    box-shadow: 8px 8px 8px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+    transform: scaleX(1.02) scaleY(1.02);
+}
+
+.game-card .game-card-img:active {
+    box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+    transform: scaleX(0.99) scaleY(0.99);
 }
 
 .game-card .overlay {
@@ -583,6 +601,7 @@ header .spacer {
     position: absolute;
     top: 0;
     left: 0;
+    transition: background-color 0.15s ease-in-out;
 }
 
 .game-card .overlay:hover {
@@ -617,6 +636,7 @@ header .spacer {
     top: 50%;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
+    pointer-events: none;
 }
 
 .overlay .show-hover {
@@ -690,7 +710,7 @@ header .spacer {
 
 /* PANEL */
 .panel {
-    background: #ffffff;
+    background: rgba(255,255,255,.4);
     border-radius: 5px;
     border: 1px solid #e5ecf4;
     display: flex;
