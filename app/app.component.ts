@@ -61,9 +61,11 @@ export class AppComponent {
 	public set isLoading(value: boolean) {
 		if (value) {
 			jQuery('.loading').fadeIn();
+			jQuery('app').fadeOut();
 		}
 		else {
 			jQuery('.loading').fadeOut();
+			jQuery('app').fadeIn();
 		}
 	}
 }

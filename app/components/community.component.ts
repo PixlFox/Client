@@ -15,6 +15,7 @@ export class CommunityComponent implements AfterViewInit, OnDestroy {
 
 	ngAfterViewInit() {
 		this.webView = document.querySelector('#community-webview');
+		this.webView.openDevTools();
 	}
 
 	ngOnDestroy(): void {

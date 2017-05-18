@@ -20,8 +20,9 @@ export class LibraryComponent {
 	}
 
 	public viewGame(gameId: string) {
-		let game = this.pixlfoxClient.getLibraryItem(gameId);
-		this.viewPanelService.loadView("default", GameViewComponent).game = game;
+		//let game = this.pixlfoxClient.getLibraryItem(gameId);
+		//this.viewPanelService.loadView("default", GameViewComponent).game = game;
+		this.viewPanelService.loadView("default", CommunityComponent).navigate("https://pixlfox.com/store/games/view/" + gameId);
 	}
 
 	public viewStorePage(gameId: string) {
