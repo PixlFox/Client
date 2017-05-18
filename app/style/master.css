@@ -569,11 +569,12 @@ header .spacer {
     width: 165px;
     height: 220px;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+    transition: all 0.15s ease-in-out;
 }
 
 .game-card .game-card-img:hover {
     box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
-    transform: scaleX(1.01) scaleY(1.01);
+    transform: scaleX(1.01) scaleY(1.02);
 }
 
 .game-card .overlay {
@@ -726,8 +727,9 @@ header .spacer {
 }
 
 .panel.full {
-    margin: 16px;
-    height: calc(100% - 32px);
+    height: 100%;
+    border-radius: 0;
+    border: none;
 }
 
 .panel.full .body {
@@ -856,25 +858,28 @@ body.dark-theme .friends-panel .thumb-box .status {
 }
 
 body.dark-theme .chat-history {
-    background-color: #1e2430;
-    border-color: #212631;
+    border-color: #303746;
     color: #c7cad8;
 }
 
+body.dark-theme .chat-panel textarea {
+    color: #ffffff;
+}
+
 body.dark-theme .panel {
-    background-color: #1e2430;
-    border-color: #212631;
+    background-color: rgba(30, 36, 48, .4);
+    border-color: #303746;
     color: #c7cad8;
 }
 
 body.dark-theme .chat-list-item.selected {
-    background-color: #212631;
+    background-color: rgba(48, 55, 70, .4);
 }
 
 body.dark-theme .panel .header,
 body.dark-theme .chat-list-item,
 body.dark-theme .chat-list {
-    border-color: #212631;
+    border-color: #303746;
 }
 
 body.dark-theme .view-panel {

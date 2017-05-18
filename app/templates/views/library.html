@@ -14,7 +14,7 @@
                     <button class="btn btn-info" (click)="$event.stopPropagation(); gameManager.install(libraryItem, null);">Install</button>
                 </div>
                 <div class="btn-group center show-hover" *ngIf="!libraryItem['supportedPlatforms'] || libraryItem['supportedPlatforms'].indexOf(pixlfoxClient.currentPlatform) == -1">
-                    <button class="btn btn-info" mdTooltip="This app is not currently supported on your system." mdTooltipPosition="above">Unsupported</button>
+                    <button class="btn btn-info" (click)="$event.stopPropagation();" mdTooltip="This app is not currently supported on your system." mdTooltipPosition="above">Unsupported</button>
                 </div>
                 <div class="bottom-right show-hover">
                     <!--<i class="mdi mdi-delete" mdTooltip="Uninstall" mdTooltipPosition="above" *ngIf="libraryItem['isInstalled']" (click)="gameManager.uninstall(libraryItem)"></i>-->
@@ -25,6 +25,84 @@
         </div>
         <div class="game-card-caption" (click)="viewGame(libraryItem.id)">
             <h3 class="game-card-title">{{libraryItem.name}}</h3>
+        </div>
+    </div>
+    <div class="game-card" [contextMenu]="libraryContextMenu" [contextMenuSubject]="libraryItem">
+        <div class="game-card-img">
+            <img src="https://s-media-cache-ak0.pinimg.com/originals/fb/e6/8e/fbe68eab4723aaf9246600aa7c9abc69.jpg" alt="">
+            <div class="overlay">
+                <div class="btn-group center show-hover">
+                    <button class="btn btn-danger" (click)="$event.stopPropagation();" mdTooltip="This app is not currently supported on your system." mdTooltipPosition="above">Demo Content</button>
+                </div>
+            </div>
+        </div>
+        <div class="game-card-caption" (click)="viewGame(libraryItem.id)">
+            <h3 class="game-card-title">Tomb Raider</h3>
+        </div>
+    </div>
+    <div class="game-card" [contextMenu]="libraryContextMenu" [contextMenuSubject]="libraryItem">
+        <div class="game-card-img">
+            <img src="https://media.rockstargames.com/rockstargames/img/global/news/upload/actual_1364906194.jpg" alt="">
+            <div class="overlay">
+                <div class="btn-group center show-hover">
+                    <button class="btn btn-danger" (click)="$event.stopPropagation();" mdTooltip="This app is not currently supported on your system." mdTooltipPosition="above">Demo Content</button>
+                </div>
+            </div>
+        </div>
+        <div class="game-card-caption" (click)="viewGame(libraryItem.id)">
+            <h3 class="game-card-title">GTA V</h3>
+        </div>
+    </div>
+    <div class="game-card" [contextMenu]="libraryContextMenu" [contextMenuSubject]="libraryItem">
+        <div class="game-card-img">
+            <img src="http://www.oxpal.com/wp-content/uploads/2014/08/gears_of_war_judgement_-_cover.jpg" alt="">
+            <div class="overlay">
+                <div class="btn-group center show-hover">
+                    <button class="btn btn-danger" (click)="$event.stopPropagation();" mdTooltip="This app is not currently supported on your system." mdTooltipPosition="above">Demo Content</button>
+                </div>
+            </div>
+        </div>
+        <div class="game-card-caption" (click)="viewGame(libraryItem.id)">
+            <h3 class="game-card-title">Gears of War</h3>
+        </div>
+    </div>
+    <div class="game-card" [contextMenu]="libraryContextMenu" [contextMenuSubject]="libraryItem">
+        <div class="game-card-img">
+            <img src="http://i39.tinypic.com/50l9o4.jpg" alt="">
+            <div class="overlay">
+                <div class="btn-group center show-hover">
+                    <button class="btn btn-danger" (click)="$event.stopPropagation();" mdTooltip="This app is not currently supported on your system." mdTooltipPosition="above">Demo Content</button>
+                </div>
+            </div>
+        </div>
+        <div class="game-card-caption" (click)="viewGame(libraryItem.id)">
+            <h3 class="game-card-title">Deus Ex</h3>
+        </div>
+    </div>
+    <div class="game-card" [contextMenu]="libraryContextMenu" [contextMenuSubject]="libraryItem">
+        <div class="game-card-img">
+            <img src="https://vignette2.wikia.nocookie.net/battlefield/images/d/d0/BF1_Artwork.jpg/revision/latest?cb=20160506225701" alt="">
+            <div class="overlay">
+                <div class="btn-group center show-hover">
+                    <button class="btn btn-danger" (click)="$event.stopPropagation();" mdTooltip="This app is not currently supported on your system." mdTooltipPosition="above">Demo Content</button>
+                </div>
+            </div>
+        </div>
+        <div class="game-card-caption" (click)="viewGame(libraryItem.id)">
+            <h3 class="game-card-title">Battlefield 1</h3>
+        </div>
+    </div>
+    <div class="game-card" [contextMenu]="libraryContextMenu" [contextMenuSubject]="libraryItem">
+        <div class="game-card-img">
+            <img src="http://culturemagnet.com/wp-content/uploads/2015/06/05-game.jpg" alt="">
+            <div class="overlay">
+                <div class="btn-group center show-hover">
+                    <button class="btn btn-danger" (click)="$event.stopPropagation();" mdTooltip="This app is not currently supported on your system." mdTooltipPosition="above">Demo Content</button>
+                </div>
+            </div>
+        </div>
+        <div class="game-card-caption" (click)="viewGame(libraryItem.id)">
+            <h3 class="game-card-title">Limbo</h3>
         </div>
     </div>
 </div>
